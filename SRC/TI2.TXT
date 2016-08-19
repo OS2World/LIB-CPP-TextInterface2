@@ -1,0 +1,3966 @@
+
+                              Text Interface/2
+         Copyright (c) Jonathan Tew and Revolutionary Software 1995
+                            All Rights Reserved
+
+                               Version 0.99e
+
+    This documentation is unformmated due to the time needed to format it
+    and the rapid changes that this product under went.
+
+                     T A B L E   O F   C O N T E N T S
+
+          PUBLIC DOMAIN NOTICE ................................
+          LICENSE AND DISCLAIMER ..............................
+          TRADEMARKS AND COPYRIGHTS ...........................
+          CONTACTING REVOLUTIONARY SOFTWARE ...................
+          PROGRAMMER'S VIEW ON PORTABILITY AND POWER ..........
+          INTRODUCTION AND PRELIMINARIES ......................
+          DEFINITION OF A WINDOW ..............................
+          PROPERTIES OF TI/2 WINDOWS ..........................
+          Z POSITION AND COORDINATE SYSTEM ....................
+          GLOBAL VARIABLES ....................................
+          DESKTOP .............................................
+          OVERLAPPING WINDOWS AND OUTPUT ......................
+          MANDATORY FUNCTIONS AND HEADER FILES ................
+            win_init ..........................................
+            win_deinit ........................................
+          OTHER NON-CLASS FUNCTIONS ...........................
+            win_redraw_all ....................................
+            win_set_default_colors ............................
+            win_text_mode .....................................
+            menu_set_default_colors ...........................
+            form_set_default_colors ...........................
+          WINDOW CLASS FUNCTIONS ..............................
+            center ............................................
+            clr_eoc ...........................................
+            clr_eol ...........................................
+            clr_region ........................................
+            clr_scr ...........................................
+            cntr_printf .......................................
+            col_cntr_printf ...................................
+            create ............................................
+            cursor_off ........................................
+            cursor_on .........................................
+            def_create ........................................
+            destroy ...........................................
+            explode ...........................................
+            fill ..............................................
+            fill_col ..........................................
+            fill_row ..........................................
+            frame_change ......................................
+            frame_textbackground ..............................
+            frame_textcolor ...................................
+            frame_x_relative ..................................
+            frame_y_relative ..................................
+            get_attr ..........................................
+            goto_xy ...........................................
+            hide ..............................................
+            hscroll_create ....................................
+            hscroll_destroy ...................................
+            hscroll_left ......................................
+            hscroll_mouse_move ................................
+            hscroll_right .....................................
+            hscroll_update_cur ................................
+            hscroll_update_cur_and_max ........................
+            implode ...........................................
+            make_normal .......................................
+            make_seethru ......................................
+            move ..............................................
+            nd_clr_region .....................................
+            nd_printf .........................................
+            nd_putch ..........................................
+            nd_putctrlch ......................................
+            nd_puts ...........................................
+            nd_width_printf ...................................
+            nd_width_puts .....................................
+            popup .............................................
+            redisplay .........................................
+            redisplay_text ....................................
+            resize ............................................
+            scroll_down .......................................
+            scroll_left .......................................
+            scroll_off ........................................
+            scroll_on .........................................
+            scroll_part_down ..................................
+            scroll_part_left ..................................
+            scroll_part_right .................................
+            scroll_part_up ....................................
+            scroll_right ......................................
+            scroll_up .........................................
+            set_attr ..........................................
+            set_pos ...........................................
+            slide .............................................
+            read_attr .........................................
+            read_char .........................................
+            read_char_and_attr ................................
+            rj_printf .........................................
+            text_background ...................................
+            text_color ........................................
+            text_height .......................................
+            text_width ........................................
+            text_x_relative ...................................
+            text_y_relative ...................................
+            title_change ......................................
+            title_textbackground ..............................
+            title_textcolor ...................................
+            unhide ............................................
+            vscroll_create ....................................
+            vscroll_destroy ...................................
+            vscroll_down ......................................
+            vscroll_mouse_move ................................
+            vscroll_up ........................................
+            vscroll_update_cur ................................
+            vscroll_update_cur_and_max ........................
+            where_win_x .......................................
+            where_win_y .......................................
+            where_x ...........................................
+            where_y ...........................................
+            width_printf ......................................
+            wprintf ...........................................
+            wputch ............................................
+            wputctrlch ........................................
+            wputs .............................................
+            write_text_to_file ................................
+          WINDOW CLASS INPUT FUNCTIONS ........................
+            input_4d_addr .....................................
+            input_byte ........................................
+            input_frmt_string .................................
+            input_hhmmss ......................................
+            input_init ........................................
+            input_string ......................................
+            input_toggle_uchar_bit_yes_no .....................
+            input_toggle_uchar_yes_no .........................
+            input_toggle_ulong_bit_yes_no .....................
+            input_toggle_ushort_bit_yes_no ....................
+            input_ulong .......................................
+            input_upcase_string ...............................
+            input_ushort ......................................
+          MENU CLASS FUNCTIONS ................................
+            add_menucmd_func ..................................
+            add_menucmd_seperator .............................
+            add_menucmd_submenu ...............................
+            add_submenu .......................................
+            create ............................................
+            destroy ...........................................
+            load ..............................................
+            menucmd_active ....................................
+            menucmd_inactive ..................................
+            submenu_active ....................................
+            submenu_inactive ..................................
+          FORM CLASS FUNCTIONS ................................
+            add_4d_addr .......................................
+            add_button ........................................
+            add_byte ..........................................
+            add_char ..........................................
+            add_checkbox ......................................
+            add_checkbox_entry ................................
+            add_control_string ................................
+            add_format_string .................................
+            add_hhmmss ........................................
+            add_int ...........................................
+            add_listbox .......................................
+            add_listbox_entry .................................
+            add_long ..........................................
+            add_mmddyyyy ......................................
+            add_radiobutton ...................................
+            add_radiobutton_entry .............................
+            add_string ........................................
+            add_toggle_uchar ..................................
+            add_toggle_uchar_bit ..............................
+            add_toggle_ushort_bit .............................
+            add_ulong .........................................
+            add_upcase_string .................................
+            add_user_def_char .................................
+            add_ushort ........................................
+            button_colors .....................................
+            checkbox_colors ...................................
+            create ............................................
+            destroy ...........................................
+            display ...........................................
+            field_colors ......................................
+            get_cur_field .....................................
+            get_listbox_entry .................................
+            load ..............................................
+            number_colors .....................................
+            radiobutton_colors ................................
+            radiobutton_status ................................
+            set...var .........................................
+            string_colors .....................................
+          MOUSE FUNCTIONS .....................................
+            mouse_deinit ......................................
+            mouse_init ........................................
+            mouse_off .........................................
+            mouse_on ..........................................
+            mouse_read_event ..................................
+          TIME SLICE FUNCTIONS ................................
+            init_timeslice ....................................
+            timeslice .........................................
+
+    PUBLIC DOMAIN
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        This version of TI/2 is released to the public domain.  The source
+    code is still the property of Jonathan Tew and Revolutionary Software,
+    but it may be modified and used withing your programs as you see fit.
+    If used within your program please add a line to the your copyright
+    notice which says "Portions Copyright (c) 1995 Jonathan Tew and
+    Revolutionary Software."
+
+        I decided to release this code to the public domain because I feel
+    that it will be useful to programmers and help others to learn from it.
+    Revolutionary Software does not plan to maintain this code due the fact
+    we have shifted all attention to the graphical interfaces such as the
+    OS/2 Presentation Manager.  We do recognize the fact that text mode
+    interface still have a place and a purpose.  Therefore we decided to
+    release this code to help new programmers to design powerful application
+    which look good quickly without having to reinvent the wheel.
+
+        Since archive contains no compiled source.  It is your job to
+    compile the source and make modifications as you see fit to make it work
+    within your programs.  The make files originally used have been included
+    to help with the process.
+
+    LICENSE AND DISCLAIMER
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+      - Text Interface/2 and TI/2 refers to all the libraries, source code,
+        and documentation.
+
+      - TI/2 is copyrighted material by Jonathan Tew and Revolutionary
+        Software. It may only be used in agreement with the conditions set
+        out in this license agreement.
+
+      - The source code may be incorporated into your programs, but proper
+        credit must be given to Jonathan Tew and Revolutionary Software.
+
+      - Although care has been taken to write and test TI/2 so that it
+        performs as this document states, TI/2 is provided as is without
+        warranty or guarantee of any kind, either expressed or implied, as
+        to the fitness for a particular purpose or quality or performance
+        of this program.
+
+      - In no event shall Jonathan Tew or Revolutionary Software be liable
+        to the developer or the user of a product developed with TI/2 for
+        any damages or cost, including, but not limited to, any loss of
+        profits, loss of savings or lost income which may result from the
+        use or inability to use TI/2.
+
+      - In no way is Jonathan Tew or Revolutionary Software obligated to
+        the developer or anyone else to provide future version of, or
+        support of TI/2.
+
+      - Your use of TI/2 constitutes your agreement to this license and
+        disclaimer and your release of the author from any form of liability
+        or litigation.
+
+    TRADEMARKS AND COPYRIGHTS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Text Interface/2 and TI/2 are trademarks of Jonathan Tew and
+    Revolutionary Software.
+
+    All Borland products names are trademarks or registered trademarks of
+    Borland International, Inc.
+
+    IBM, OS/2 and Operating System/2 are registered trademarks of
+    International Business MAchines Corporation.
+
+    Other brand and product names are trademarks or registered trademarks of
+    their respective holders.
+
+    CONTACTING REVOLUTIONARY SOFTWARE
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        Revolutionary Software can be contacted by mail or other electronic
+    means at this time.
+
+            Mail:             Revolutionary Software
+                              c/o Jonathan Tew
+                              2689 Hickory Cove
+                              Lilburn, GA  30247
+
+            BBS:              The Fallen Fortress
+                              (404) 469-6752
+
+            Internet E-Mail   jtew@revsoft.is.net
+
+            Internet WWW Page http://revsoft2.is.net
+
+
+    PROGRAMMER'S VIEW ON PORTABILITY AND POWER
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        TI/2 is written entirely in C/C++.  The authors choose to use
+    absolutely no Assembly language or detection of output hardware etc.
+    Since Assembly was not designed as a portable language and output
+    hardware, including video cards, varies from machine to machine
+    programmers who rely on detecting it tend to bind their code to a
+    specific operating system.  There choices have allowed TI/2 to have the
+    power that it does.  From the base up TI/2 has been designed as a
+    portable development library that not only spans multiple compilers, but
+    platforms also.  The design of the routines that make up the library are
+    so flexible that the interface could even be implemented over a modem
+    using a terminal emulation such as ANSI or Avatar or on a remote
+    terminal.  The source code is written with defines and function wrappers
+    to allow for the greatest amount of portability by reducing system and
+    platform dependency.  This portability will allow developers who use
+    TI/2 to develop multi-platform products with greater ease by reducing
+    the amount of source code porting required on their part.
+
+        TI/2 is superior to other text interface kits because of many
+    reasons. Since the source code is available, developers will not have to
+    give excuses to their customers because the interface library they use
+    does not support their target platform.  Many applications in the past
+    have faded away because they relied on libraries where the source code
+    was unavailable or too system dependent.  The availability of source
+    code doesn't mean that it is understandable source code.  The TI/2
+    source code if fully commented and laid out in a logical manner to allow
+    developers to become familiar with it quickly and adapt it to suit their
+    needs.
+
+    INTRODUCTION AND PRELIMINARIES
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        Congratulations! on using Text Interface/2 (TI/2).  You have chosen
+    a powerful, portable, inexpensive C++ user interface library.  Before
+    talking about programming with TI/2, we will discuss how to compile and
+    link programs.  Below is a list of the libraries that need to be linked
+    with the various compilers that TI/2 supports.
+
+        There are three libraries associated with TI/2.  They are
+    TI2WIN.LIB, TI2FORM.LIB, and TI2MENU.LIB.  If TI2FORM.LIB or TI2MENU.LIB
+    are included than TI2WIN.LIB must also be.  The correct library can be
+    found in a specific directory.
+
+      SW\                 - Shareware version of the library
+        TC30\               - Turbo C++ 3.0 for DOS
+          MEDIUM\             - Medium memory model
+          LARGE\              - Large memory model
+          HUGE\               - Huge memory model
+        BCOS2_15\           - Borland C++ 1.5 for OS/2
+          SINGLE\             - Single threaded
+                 DLL\         - Single threaded DLL
+          MULTI\              - Multi threaded
+                DLL\          - Multi threaded DLL
+
+      REG\                - Registered version of the library
+        TC30\               - Turbo C++ 3.0 for DOS
+          MEDIUM\             - Medium memory model
+          LARGE\              - Large memory model
+          HUGE\               - Huge memory model
+        BCOS2_15\           - Borland C++ 1.5 for OS/2
+          SINGLE\             - Single threaded
+                 DLL\         - Single threaded DLL
+          MULTI\              - Multi threaded
+                DLL\          - Multi theaded DLL
+
+        The precompiled header for TI/2 is in the INCLUDE directory for
+    TI/2.  Include the line #include "c:\ti2\include\ti2.h" in the top of your
+    program.
+
+        The correct library should be included in your project file.  If you
+    have a DOS based compiler or one that uses memory models make sure that
+    the settings are correct for the model you wish to use.  If you are
+    using a multithreading capable compiler make sure you choose the right
+    library for your application.
+
+        In each DLL directory there is an import library that should be
+    included when you compile the program.  Remember the DLL must be in
+    the same directory as the EXE or in the LIBPATH for the program to run
+    without error.
+
+    DEFINITION OF A WINDOW
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        A window is a region of the screen that is separate and independent
+    from the other regions of the screen.  Windows are a vital part of an
+    application and help to provide a profession appearance.  Windows are
+    used to construct many things including pull-down menus.  The use of
+    windows is found in almost all profession programs.  A great example of
+    the use of windows to create an integrated environment is the Borland
+    compiler's IDE.
+
+    PROPERTIES OF TI/2 WINDOWS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        - More than one window can be displayed on the screen
+          simultaneously.
+
+        - Windows are allowed to overlap without disturbing the contents of
+          the windows underneath.
+
+        - A Window that is hidden underneath other windows can be brought to
+          the top of the screen.
+
+        - Windows can be disposed of at any time.  When erased the windows
+          above and below are updated and restored correctly.
+
+        - Windows can be written to or redraw at any time.
+
+    Z POSITION AND COORDINATE SYSTEM
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        If you have ever programmed before, you most likely know how the
+    coordinate system works.  TI/2 uses a 1 based coordinate system which
+    means the top left corner of a rectangle would be represented by 1,1.
+    All though you probably know that windows have X,Y coordinates they also
+    have a Z coordinate.   The drawing below illustrates three boxes with
+    different Z positions that overlap.
+
+      REAL VIEW FROM FRONT OF MONITOR
+      ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+      ÉÍÍÍÍÍÍÍÍÍ»                     Notice how the three windows overlap
+      º         º                     and cover portions of the window below
+      º    ÉÍÍÍÍÍÍÍÍÍ»                them.
+      º    º         º
+      º    º    ÉÍÍÍÍÍÍÍÍÍ»
+      ÈÍÍÍÍº    º         º
+           º    º         º
+           ÈÍÍÍÍº         º
+                º         º
+                ÈÍÍÍÍÍÍÍÍÍ¼
+
+      IMAGINARY VIEW FROM TOP OF MONITOR LOOKING IN
+      ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+
+
+      ÍÍÍÍÍÍÍÍÍÍÍ               <ÄÄÄ Z position 1
+
+           ÍÍÍÍÍÍÍÍÍÍÍ          <ÄÄÄ Z position 2
+
+                ÍÍÍÍÍÍÍÍÍÍÍ     <ÄÄÄ Z position 3
+
+
+
+                 ^
+                 ³
+
+      < Person Looking in   >
+      < from this direction >
+
+        When programming with TI/2 you don't have to actually specify z
+    positions when windows are created, but you should be familiar with the
+    way the windows are positioned.  When a window is created it has the
+    highest z position.  If a window is popped to the top than it will the
+    have the highest z position.
+
+    Below is example of some windows on the screen and the coordinates that
+    would correspond with them.
+
+             ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+             ³(1,1)                                              (80,1)³
+             ³                                                         ³
+             ³            Valid Absolute Screen Coordinates            ³
+             ³                   For 80 x 25 Screen                    ³
+             ³                                                         ³
+             ³          This window opened at absolute (16,13)         ³
+             ³             ³                                           ³
+             ³             ³                                           ³
+             ³             V                                           ³
+             ³            ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿                      ³
+             ³            ³(1,1)          (14,1)³                      ³
+             ³            ³                     ³                      ³
+             ³            ³                     ³                      ³
+             ³            ³(1,10)        (14,10)³                      ³
+             ³            ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                      ³
+             ³(1,25)                                            (80,25)³
+             ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+    GLOBAL VARIABLES
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        The global variables used by TI/2 have a specific naming convention.
+    All variables start with ti2.  This naming convention is used so that
+    the variables that are declared in programs that use TI/2 have almost no
+    chance of having the exact same name.
+
+    DESKTOP
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        When the TI/2 library is initialized it creates a desktop window.
+    This is necessary because of the way TI/2 handles window management.
+    The desktop window covers the entire screen and can be used be used by
+    you in your program.  The desktop window is named desktop so you can use
+    it like any other window.  For instance if you want to print something
+    on the desktop just add the command desktop.wputs("Hello world!"); to
+    your program.  Some functions should not be used with the desktop
+    window.  For instance those that hide, unhide, make it see-through, etc.
+    There is need for you to call desktop.destroy at the end of your program
+    either.  This is done automatically when TI/2 is deinitialized.
+
+    OVERLAPPING WINDOWS AND OUTPUT
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        With TI/2, if a window overlaps another window, this overlap will be
+    displayed on the physical screen.  TI/2 allows you to direct output to
+    any window at any time.  When output is written to a window, the windows
+    contents are updated in memory, but only the visible portions of the
+    window will be updated on the screen.
+
+    MANDATORY FUNCTIONS AND HEADER FILES
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        header files
+        ÄÄÄÄÄÄÄÄÄÄÄÄ
+
+            The only mandatory functions are win_init() and win_deinit()
+        which are explained below.  The ti2.h header file must be included
+        in any module that will call functions that are part of the TI/2
+        library.  This means that in any C++ file you must have the
+        following line with the other #include statements.
+
+            #include "ti2.h"
+
+        win_init()
+        ÄÄÄÄÄÄÄÄÄÄ
+
+            This function must be called before any function defined in the
+        TI/2 library.  Failure to do so will cause all TI/2 functions not to
+        work.  The purpose of this function is to setup global variables and
+        allocate any memory that TI/2 might need.  After all the
+        initialization of variables and memory the desktop window is
+        created.
+
+        win_deinit()
+        ÄÄÄÄÄÄÄÄÄÄÄÄ
+
+            This function needs to be called right before your program
+        exits. The purpose of this function is to perform cleanup, memory
+        deallocation, and destroy the desktop window. If this function is
+        not called it could cause a "memory leak" in your program that the
+        operating system might not correct.
+
+        Example
+        ÄÄÄÄÄÄÄ
+
+        #include "ti2.h"
+
+        void main(void)
+            {
+              /* Initialize TI/2 */
+              win_init();
+
+              /* ... Program code goes here ... */
+
+
+              /* Deinitialize TI/2 */
+              win_deinit();
+            }
+
+    OTHER NON-CLASS FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        These functions are not part of the classes because they affect all
+    the windows, forms, or menus created by the program.
+
+    win_redraw_all
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Redraw all windows on screen.
+
+    Syntax        void win_redraw_all(void);
+
+    Remarks       win_redraw_all redraws all the windows on the screen
+                  starting with the desktop and windowing up to the top
+                  window.  This function may needed to be called if the
+                  screen gets messed up for some unknown reason and needs a
+                  refresh.  This function is also called when the text mode
+                  is changed.
+
+    Return value  None.
+
+    See Also      win_text_mode
+
+    win_set_default_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets default colors for windows.
+
+    Syntax        void win_set_default_colors(uchar f_fcolor,
+                                              uchar f_bcolor,
+                                              uchar t_fcolor,
+                                              uchar t_bcolor,
+                                              uchar title_fcolor,
+                                              uchar title_bcolor,
+                                              uchar scroll_fcolor,
+                                              uchar scroll_bcolor);
+
+    Remarks       Sets the default colors for a new window.  This helps to
+                  cut down on the number of repetive parameters that would
+                  need to be used in large programs.  This is also helpful
+                  in programs that use a uniform color scheme.  The
+                  win_c::def_create function is used to create a window
+                  which uses the default colors.
+
+    Return value  None.
+
+    See Also      def_create
+
+    win_text_mode
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Changes the text mode.
+
+    Syntax        void win_text_mode(int newmode);
+
+    Remarks       win_text_mode changes the text mode, adjusts the desktop
+                  window to cover the screen, and redraws all the windows.
+
+    Return value  None.
+
+    menu_set_default_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the default colors for menus.
+
+    Syntax        void menu_set_default_colors(uchar hotkey_fcolor,
+                                                uchar norm_fcolor,
+                                                uchar norm_bcolor,
+                                                uchar high_fcolor,
+                                                uchar high_bcolor,
+                                                uchar inactive_fcolor,
+                                                uchar inactive_bcolor,
+                                                uchar frame_fcolor,
+                                                uchar frame_bcolor);
+
+    Remarks       Sets the default colors for a new menu.  This helps to
+                  cut down on the number of repetive parameters that would
+                  need to be used in large programs.  This is also helpful
+                  in programs that use a uniform color scheme.  The
+                  menu_c::def_create function is used to create a menu
+                  which uses the default colors.
+
+    Return value  None.
+
+    See Also      def_create
+
+    form_set_default_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the default colors for forms.
+
+    Syntax        void form_set_default_colors(uchar button_norm_fcolor,
+                                               uchar button_norm_bcolor,
+                                               uchar button_high_fcolor,
+                                               uchar button_high_bcolor,
+                                               uchar button_inactive_fcolor,
+                                               uchar button_inactive_bcolor,
+                                               uchar button_shadow_fcolor,
+                                               uchar button_shadow_bcolor,
+                                               uchar field_norm_fcolor,
+                                               uchar field_norm_bcolor,
+                                               uchar field_high_fcolor,
+                                               uchar field_high_bcolor,
+                                               uchar field_inactive_fcolor,
+                                               uchar field_inactive_bcolor,
+                                               uchar string_norm_fcolor,
+                                               uchar string_norm_bcolor,
+                                               uchar string_high_fcolor,
+                                               uchar string_high_bcolor,
+                                               uchar string_inactive_fcolor,
+                                               uchar string_inactive_bcolor,
+                                               uchar number_norm_fcolor,
+                                               uchar number_norm_bcolor,
+                                               uchar number_high_fcolor,
+                                               uchar number_high_bcolor,
+                                               uchar number_inactive_fcolor,
+                                               uchar number_inactive_bcolor,
+                                               uchar checkbox_norm_fcolor,
+                                               uchar checkbox_norm_bcolor,
+                                               uchar checkbox_high_fcolor,
+                                               uchar checkbox_high_bcolor,
+                                               uchar checkbox_inactive_fcolor,
+                                               uchar checkbox_inactive_bcolor,
+                                               uchar checkbox_box_bcolor,
+                                               uchar radiobutton_norm_fcolor,
+                                               uchar radiobutton_norm_bcolor,
+                                               uchar radiobutton_high_fcolor,
+                                               uchar radiobutton_high_bcolor,
+                                               uchar radiobutton_inactive_fcolor,
+                                               uchar radiobutton_inactive_bcolor,
+                                               uchar radiobutton_box_bcolor,
+                                               uchar listbox_norm_fcolor,
+                                               uchar listbox_norm_bcolor,
+                                               uchar listbox_high_fcolor,
+                                               uchar listbox_high_bcolor,
+                                               uchar listbox_bcolor,
+                                               uchar listbox_scroll_fcolor,
+                                               uchar listbox_scroll_bcolor);
+
+    Remarks       Sets the default colors for a new form.  This helps to
+                  cut down on the number of repetive parameters that would
+                  need to be used in large programs.  This is also helpful
+                  in programs that use a uniform color scheme.  The
+                  form_c::default_colors function is used to set the colors
+                  of a form to the default colors.
+
+    Return value  None.
+
+    See Also      default_colors
+
+    WINDOW CLASS FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        For those who are unfamiliar with the way classes work here is a
+    brief description of how to declare a window.  Windows are like any
+    other variables.  To create a window variable just declare it like this:
+
+        win_c my_window;      // This is a window variable
+
+        After declaring a window variable you will need to call the create
+    function to open the window.  Then you can call any of the other
+    functions that are part of the window class.  When you are finished with
+    the you can remove is from the screen by calling the destroy function.
+    If you are new to C++ than here is an example of calling some window
+    functions.
+
+            my_window.clr_eol();
+            my_window.wprintf("Hello World! I'm %d years old\n", 16);
+
+        The following functions are part of the window class.
+
+    center
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Centers a window on the screen.
+
+    Syntax        void win_c::center(ushort type);
+
+    Remarks       A call to center will cause a window to be hidden,
+                  repositions in the center of the screen, and unhidden.
+                  Type is a bitwise value that is ORed together.  Values
+                  that can be ORed are WIN_HORIZ_CNTR and WIN_VERT_CNTR.
+
+    Return value  None.
+
+    See also      slide, move
+
+    clr_eoc
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Clears to end of the column in the text window.
+
+    Syntax        void win_c::clr_eoc(void);
+
+    Remarks       clr_eoc clears all the characters from the cursor to the
+                  end of the column without moving the cursor position.  All
+                  the characters below the cursor will become spaces and
+                  they  will have the same foreground and background colors
+                  as the current setting for the window.
+
+    Return value  None.
+
+    See also      clr_region, clr_scr, clr_eol
+
+
+
+    clr_eol
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Clears to end of the line in the text window.
+
+    Syntax        void win_c::clr_eol(void);
+
+    Remarks       clr_eol clears all the characters from the cursor to the
+                  end of the line without moving the cursor position.  All
+                  the characters to the right of the cursor will become
+                  spaces and they  will have the same foreground and
+                  background colors as the current setting for the window.
+
+    Return value  None.
+
+    See also      clr_region, clr_scr, clr_eoc
+
+
+    clr_region
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Clears a region of the window specified by the coordinates
+                  given.
+
+    Syntax        void win_c::clr_region(uchar x1, uchar y1, uchar x2,
+                                         uchar y2);
+
+    Remarks       clr_region clears all the characters inside the region.
+                  All the characters become spaces and assume the current
+                  foreground and background.  The coordinates are relative
+                  to the text region of the window.
+
+    Return value  None.
+
+    See also      clr_eol, clr_scr, clr_eoc
+
+    clr_scr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Clears the entire text region of the window.
+
+    Syntax        void win_c::clr_scr(void);
+
+    Remarks       Clears the entire text mode window.  All the characters
+                  become spaces and assume the current foreground and
+                  background colors. The cursor will be positions at the top
+                  left corner of the window.
+
+    Return value  None.
+
+    See also      clr_eol, clr_region, clr_eoc
+
+    cntr_printf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Centers formatted output on a row of the window.
+
+    Syntax        void win_c::cntr_printf(uchar y, char *fmt, ...);
+
+    Remarks       cntr_printf will center a line of text on the row
+                  specified by y around the center column of the text
+                  window. It accepts the same style of arguments and format
+                  specifiers as the printf function.  If the total length of
+                  the string is greater than the with of the text window
+                  than the string will be truncated.
+
+    Return value  None.
+
+    See Also      col_cntr_printf, nd_printf, rj_printf, wprintf
+
+    col_cntr_printf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Centers formatted output on a row and around a column of
+                  the window.
+
+    Syntax        void win_c::col_cntr_printf(uchar x, uchar y, char *fmt,
+                                              ...);
+
+    Remarks       col_cntr_printf will center a line of text on the row
+                  specified by y and around the column specified by x of the
+                  text window. It accepts the same style of arguments and
+                  format specifiers as the printf function.  If the total
+                  length of the string is greater than the width of the text
+                  window than the string will be truncated.
+
+    Return value  None.
+
+    See Also      cntr_printf, nd_printf, rj_printf, wprintf
+
+    create
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Creates a window on the screen.
+
+    Syntax        uchar win_c::create(uchar topx, uchar topy,
+                                      uchar botx, uchar boty,
+                                      uchar frame_fcolor,
+                                      uchar frame_bcolor, uchar text_fcolor,
+                                      uchar text_bcolor, uchar *title,
+                                      uchar title_fcolor,
+                                      uchar title_bcolor, uchar frame,
+                                      uchar shadow, ushort attr);
+
+    Remarks       create will create a new text window on the screen.
+
+                  The frame, or if there is no frame the text, region of the
+                  window is specified in coordinates absolute to the screen.
+
+                  The colors are those are the same as defined in the
+                  conio.h. Valid background colors are black through light
+                  gray.  Valid foreground colors are black through white and
+                  blinking.
+
+                  The title is a normal string of any length.  If the string
+                  is longer than the width of the window than only part of
+                  it will be displayed.
+
+                  The style of frame is determined by one of the following
+                  defines.
+
+                  Frame Styles
+                  ÄÄÄÄÄÄÄÄÄÄÄÄ
+
+                  WIN_FRAME_NONE       No Frame
+
+                  WIN_FRAME_DOUBLEBOX  ÉÍÍÍÍ»   WIN_FRAME_HATCHBOX1  °°°°°°
+                                       º    º                        °    °
+                                       º    º                        °    °
+                                       ÈÍÍÍÍ¼                        °°°°°°
+
+                  WIN_FRAME_SINGLEBOX  ÚÄÄÄÄ¿   WIN_FRAME_HATCHBOX2  ±±±±±±
+                                       ³    ³                        ±    ±
+                                       ³    ³                        ±    ±
+                                       ÀÄÄÄÄÙ                        ±±±±±±
+
+                  WIN_FRAME_MIXEDBOX1  ÕÍÍÍÍ¸   WIN_FRAME_HATCHBOX3  ²²²²²²
+                                       ³    ³                        ²    ²
+                                       ³    ³                        ²    ²
+                                       ÔÍÍÍÍ¾                        ²²²²²²
+
+                  WIN_FRAME_MIXEDBOX2  ÖÄÄÄÄ·   WIN_FRAME_SOLIDBOX1  ÛßßßßÛ
+                                       º    º                        Û    Û
+                                       º    º                        Û    Û
+                                       ÓÄÄÄÄ½                        ÛÜÜÜÜÛ
+
+                  WIN_FRAME_DOTTEDLINE ------   WIN_FRAME_SOLIDBOX2  ÛÛÛÛÛÛ
+                                       |    |                        Û    Û
+                                       |    |                        Û    Û
+                                       ------                        ÛÛÛÛÛÛ
+
+                  WIN_FRAME_BLANKBOX   Blanks
+
+                  Shadow Value                Description
+                  ÄÄÄÄÄÄÄÄÄÄÄÄ                ÄÄÄÄÄÄÄÄÄÄÄ
+
+                  WIN_SHADOW_NONE             No shadow.
+                  WIN_SHADOW_RIGHT            Shadow on bottom - right side.
+                  WIN_SHADOW_LEFT             Shadow on top - left side.
+
+                  The attribute field, attr, is constructed by bitwise ORing
+                  of values from the following list.  Some of these
+                  attribute should not be used with others.
+
+                  Value of attribute          Description
+                  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ          ÄÄÄÄÄÄÄÄÄÄÄ
+                  WIN_TITLE_LEFT              Left justify title.
+                  WIN_TITLE_CENTER            Center title.
+                  WIN_TITLE_RIGHT             Right justify title.
+                  WIN_TITLE_BOTTOM            Title on bottom of window.
+                  WIN_TEXT_NO_WRAP            Text wrapping off
+                  WIN_HORIZ_CNTR              Center window horizontally.
+                  WIN_VERT_CNTR               Center window vertically.
+                  WIN_SCROLL                  Scrolling on.  Default is off.
+                  WIN_CURSOR                  Cursor on. Default off.
+                  WIN_SEETHRU                 Make window see-through.
+                  WIN_EXPLODE                 Explode when creating.
+                  WIN_IMPLODE                 Implode when destroying.
+
+    Return value  Upon success creation of the window a non-zero value is
+                  is returned.  Upon failure a zero is returned.
+
+    See Also      destroy
+
+    cursor_off
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Turns cursor off for window.
+
+    Syntax        void win_c::cursor_off(void);
+
+    Remarks       None.
+
+    Return value  None.
+
+    See Also      cursor_on
+
+    cursor_on
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Turns cursor on for window.
+
+    Syntax        void win_c::cursor_on(void);
+
+    Remarks       None.
+
+    Return value  None.
+
+    See Also      cursor_off
+
+    def_create
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Creates a window using the default colors.
+
+    Syntax        uchar def_create(uchar topx, uchar topy, uchar botx,
+                                   uchar boty, uchar *title, uchar frame,
+                                   uchar shadow, ushort attr);
+
+    Remarks       def_create creats a new window on the screen using the
+                  default color scheme.  The parameter values are the
+                  same as the create function.
+
+    Return value  Upon success creation of the window a non-zero value is
+                  is returned.  Upon failure a zero is returned.
+
+    See Also      create, win_set_default_colors
+
+    destroy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Destroys a window on the screen.
+
+    Syntax        void win_c::destroy(void);
+
+    Remarks       Destroys a window on the screen restoring the image that
+                  exists beneath the window and updating the shadows in the
+                  windows that lay on top.  All memory is freed and all the
+                  windows above the destroyed window shift down in
+                  z-position.
+
+    Return value  None.
+
+    See Also      create
+
+    explode
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Explodes a window.
+
+    Syntax        void win_c::explode(uchar x1, uchar y1, uchar x2,
+                                      uchar y2);
+
+    Remarks       explode causes the window to get larger and gives the
+                  effect that the window is actually exploding.  x1, y1, x2,
+                  and y2 are the coordinates for the frame of the window,
+                  or if there is no frame the text region, when the window
+                  is exploded.  The window being exploded should be smaller
+                  than the final window or this function will have no effect.
+
+    Return value  None.
+
+    See Also      implode, resize
+
+    fill
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Fill a text window with a specific character.
+
+    Syntax        void win_c::fill(uchar ch);
+
+    Remarks       Fill will fill the entire text window with the character
+                  in ch with the current foreground and background colors
+                  applying.
+
+    Return value  None.
+
+    See Also      fill_col, fill_row
+
+    fill_col
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Fill a column in the text window with a specific
+                  character.
+
+    Syntax        void win_c::fill_col(uchar col, uchar ch);
+
+    Remarks       fill_col will fill the entire column specified by col in
+                  the text window with the character in ch with the current
+                  foreground and background colors applying.
+
+    Return value  None.
+
+    See also      fill, fill_row
+
+    fill_row
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Fill a row in the text window with a specific character.
+
+    Syntax        void win_c::fill_row(uchar row, uchar ch);
+
+    Remarks       fill_row will fill the entire row specified by row in
+                  the text window with the character in ch with the current
+                  foreground and background colors applying.
+
+    Return value  None.
+
+    See also      fill, fill_col
+
+    frame_change
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Changes a window's frame style.
+
+    Syntax        void win_c::frame_change(uchar frame_type);
+
+    Remarks       frame_change will change the frame style of a window and
+                  update the screen.  If the window had a frame and the new
+                  frame is specified as none than the text region of the
+                  window increases by one on all sides.  If the window had
+                  no frame and a new frame is specified than the text region
+                  of the window decreases by one on all sides.
+
+    Return value  None.
+
+    frame_textbackground
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Changes the background of a window's frame.
+
+    Syntax        void win_c::frame_textbackground(uchar frame_bcolor);
+
+    Remarks       frame_textbackground sets the current frame background
+                  color to the new one and updates the frame.
+
+    Return value  None.
+
+    frame_textcolor
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Changes the foreground of a window's frame.
+
+    Syntax        void win_c::frame_textcolor(uchar frame_bcolor);
+
+    Remarks       frame_textcolor sets the current frame foreground color to
+                  the new one and updates the frame.
+
+    Return value  None.
+
+    frame_x_relative
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Converts a absolute screen coordinate to the coordinate
+                  relative to the window.
+
+    Syntax        uchar win_c::frame_x_relative(uchar abs_x);
+
+    Remarks       frame_x_relative converts the absolute screen coordinate
+                  to the corresponding one inside the windows frame and text
+                  area.
+
+    Return value  frame_x_relative returns the x coordinate relative to the
+                  window's frame and text area.  If the absolute coordinate
+                  is not inside this area it returns zero.
+
+    See Also      frame_y_relative, text_x_relative, text_y_relative
+
+    frame_y_relative
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Converts a absolute screen coordinate to the coordinate
+                  relative to the window.
+
+    Syntax        uchar win_c::frame_y_relative(uchar abs_y);
+
+    Remarks       frame_y_relative converts the absolute screen coordinate
+                  to the corresponding one inside the windows frame and text
+                  area.
+
+    Return value  frame_y_relative returns the y coordinate relative to the
+                  window's frame and text area.  If the absolute coordinate
+                  is not inside this area it returns zero.
+
+    See Also      frame_x_relative, text_x_relative, text_y_relative
+
+    get_attr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the attributes of the window.
+
+    Syntax        ushort win_c::get_attr(void);
+
+    Remarks       get_attr returns the attribute for the window.  This can
+                  be used to test the windows status, but is mostly for
+                  internal purposes.
+
+    Return value  On success get_attr returns the attr field.  On error or
+                  if none of the attributes are set get_attr will return
+                  zero.
+
+    See Also      set_attr
+
+    goto_xy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Positions cursor inside window.
+
+    Syntax        void win_c::goto_xy(uchar x, uchar y);
+
+    Remarks       goto_xy sets the new cursor position to the coordinates of
+                  x and y.  These coordinates are relative to the text
+                  region of the window.
+
+    Return value  None.
+
+    See Also      where_x, where_y, where_win_x, where_win_y
+
+    hide
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Hides a text window on the screen
+
+    Syntax        void win_c::hide(void);
+
+    Remarks       hide causes a window to disappear from the screen.  The
+                  windows that lay above and below the window that is hidden
+                  are updated to reflect the removal of the window from the
+                  screen.  The hidden window does not lose its z-position
+                  and will reappear in the same place when unhidden.
+
+    Return value  None.
+
+    See Also      unhide
+
+    hscroll_create
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Creates a horizontal scroll bar on the bottom line of the
+                  frame.
+
+    Syntax        void win_c::hscroll_create(uchar scroll_fcolor,
+                                             uchar scroll_bcolor,
+                                             ushort cur, ushort max);
+
+    Remarks       hscroll_create creates a scroll bar on the bottom side of
+                  the frame.  The scroll bar is like a percentage bar where
+                  the minimum value is one and the maximum is max.  The
+                  colors of the scroll bar are the set to scroll_fcolor and
+                  scroll_bcolor.
+
+    Return value  None.
+
+    See Also      hscroll_destroy, hscroll_left, hscroll_right,
+                  hscroll_update_cur, hscroll_cur_and_max
+
+    hscroll_destroy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Destroys a horizontal scroll bar
+
+    Syntax        void win_c::hscroll_destroy(void);
+
+    Remarks       hscroll_destroy destroys the horizontal scroll bar and
+                  restores the frame where the scroll bar existed.
+
+    Return value  None.
+
+    See Also      hscroll_create, hscroll_left, hscroll_right,
+                  hscroll_update_cur, hscroll_cur_and_max
+
+    hscroll_left
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Shifts the horizontal scroll bar position to the left a
+                  certain number of positions.
+
+    Syntax        void win_c::hscroll_left(ushort num);
+
+    Remarks       Shifts the horizontal scroll bar position to the left a
+                  certain number of positions.  If the position is less than
+                  one than the position is set to one.  The scroll bar is
+                  updated to reflect this position.
+
+    Return value  None.
+
+    See Also      hscroll_create, hscroll_destroy, hscroll_right,
+                  hscroll_update_cur, hscroll_cur_and_max
+
+    hscroll_mouse_move
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Checks mouse events for any that apply to the scroll bar
+                  that belongs to this window.
+
+    Syntax        ushort win_c::hscroll_mouse_move(void);
+
+    Remarks       hscroll_mouse_move processes the mouse events that have
+                  occured and adjusts the scroll bar accordingly.
+
+    Return value  hscroll_mouse_move returns the new position on the scroll
+                  bar.  The program should than adjust whatever data is
+                  represented by the scroll bar.  If no events have occured
+                  that reflect the scroll bar zero is returned.
+
+    hscroll_right
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Shifts the horizontal scroll bar position to the right
+                  a certain number of positions.
+
+    Syntax        void win_c::hscroll_right(ushort num);
+
+    Remarks       Shifts the horizontal scroll bar position to the right a
+                  certain number of positions.  If the position is less than
+                  one than the position is set to one.  The scroll bar is
+                  updated to reflect this position.
+
+    Return value  None.
+
+    See Also      hscroll_create, hscroll_destroy, hscroll_left,
+                  hscroll_update_cur, hscroll_cur_and_max
+
+    hscroll_update_cur
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the new horizontal scroll bar position.
+
+    Syntax        void win_c::hscroll_update_cur(ushort hscroll_cur);
+
+    Remarks       Sets the new horizontal scroll bar position and updates
+                  the scroll bar.
+
+    Return value  None.
+
+    See Also      hscroll_create, hscroll_destroy, hscroll_left,
+                  hscroll_right, hscroll_cur_and_max
+
+    hscroll_update_cur_and_max
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the new horizontal scroll bar position and max
+                  position.
+
+    Syntax        void win_c::hscroll_update_cur_and_max(ushort hscroll_cur,
+                                                         ushort hscroll_max
+                                                         );
+
+    Remarks       Sets the new horizontal scroll bar position, maximum
+                  position, and updates the scroll bar.
+
+    Return value  None.
+
+    See Also      hscroll_create, hscroll_destroy, hscroll_left,
+                  hscroll_right, hscroll_cur
+
+    implode
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Implodes a window.
+
+    Syntax        void win_c::implode(void);
+
+    Remarks       implode causes the window to implode into a window with a
+                  1 by 1 text region centered where the window originally
+                  was on the screen.
+
+    Return value  None.
+
+    See Also      explode, resize
+
+    make_normal
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Converts a see-through window back to a normal window.
+
+    Syntax        void win_c::make_normal(void);
+
+    Remarks       Converts a see-through window back to a normal window.
+                  The text that was in the window before being converted to
+                  see-through will be redisplayed.
+
+    Return value  None.
+
+    See Also      make_seethru
+
+    make_seethru
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Converts a window to see-through.
+
+    Syntax        void win_c::make_seethru(void);
+
+    Remarks       make_seethru converts a normal window to a see-through
+                  one. A see-through window's text region is completely
+                  transparent. Any text that was in the text region before
+                  becoming see-through is preserved.
+
+    Return value  None.
+
+    See Also      make_normal
+
+    move
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Moves a window from one coordinate to another.
+
+    Syntax        void win_c::move(uchar x, uchar y);
+
+    Remarks       This function hides the window, changes the coordinates
+                  where the window exists, and unhides it.  The x and y
+                  coordinates are absolute to the screen are where the top
+                  left hand corner of the frame or if there is no frame it
+                  is the top left hand corner of the text region.
+
+    Return value  None.
+
+    See Also      slide
+
+    nd_clr_region
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Clears a region of the window in memory specified by the
+                  coordinates given.
+
+    Syntax        void win_c::nd_clr_region(uchar x1, uchar y1, uchar x2,
+                                            uchar y2);
+
+    Remarks       nd_clr_region clears all the characters inside the region.
+                  All the characters become spaces and assume the current
+                  foreground and background.  The coordinates are relative
+                  to the text region of the window.  The window is updated
+                  only in memory therefore the screen will not appear to
+                  change.  A call to redisplay_text will update the screen
+                  to reflect the window's memory.
+
+    Return value  None.
+
+    See also      clr_eol, clr_scr, clr_eoc, clr_region
+
+    nd_printf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes formatted output to the window without displaying
+                  it on the screen.
+
+    Syntax        void win_c::nd_printf(char *fmt, ...);
+
+    Remarks       nd_printf writes formatted output to the window by
+                  updating it in memory only.  This is useful for writing
+                  lots of text in a window then display it all at once.
+
+    Return value  None.
+
+    See Also      nd_putch, nd_puts, redisplay_text
+
+    nd_putch
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a character to the window without displaying it
+                  on the screen.
+
+    Syntax        void win_c::nd_putch(uchar ch);
+
+    Remarks       nd_putch writes a character to the window by updating it
+                  in memory only.  This is useful for writing lots of text
+                  in a window then display it all at once.
+
+    Return value  None.
+
+    See Also      nd_printf, nd_puts, redisplay_text
+
+    nd_putctrlch
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a control character to the window without
+                  displaying it on the screen.
+
+    Syntax        void win_c::nd_putctrlch(uchar ch);
+
+    Remarks       nd_putctrlch writes the character ch to window.  It uses
+                  the current foreground and background colors of the window
+                  for the new character.  This function will not translate
+                  any characters such as linefeed and carriage return.  The
+                  character is only written into the window's memory.  A
+                  call to redisplay_text is needed to make the character
+                  appear on the screen.
+
+    Return value  None.
+
+    See Also      nd_printf, nd_puts, nd_putch
+
+    nd_puts
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a string to the window without displaying it
+                  on the screen.
+
+    Syntax        void win_c::nd_puts(uchar *s);
+
+    Remarks       nd_puts writes a string to the window by updating it in
+                  memory only.  This is useful for writing lots of text in a
+                  window then display it all at once.
+
+    Return value  None.
+
+    See Also      nd_printf, nd_putch, redisplay_text
+
+    nd_width_printf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes length adjusted formatted output to the window
+                  without displaying it on the screen.
+
+    Syntax        void win_c::nd_width_printf(uchar width, char *fmt, ...);
+
+    Remarks       nd_width_printf writes formatted output to the window
+                  without displaying it on the screen.  If the length of the
+                  text is less than width than it is padded with spaces.  If
+                  the length is greater than width than it is truncated.
+
+    Return value  None.
+
+    See Also      nd_printf, nd_puts, nd_width_puts
+
+    nd_width_puts
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a length adjusted null terminated string to the
+                  window without displaying it on the screen.
+
+    Syntax        void win_c::nd_width_puts(uchar width, char *s);
+
+    Remarks       nd_width_puts writes the null terminated string s to the
+                  window without displaying it on the screen.  If the length
+                  of the text is less than width than it is padded with
+                  spaces.  If the length is greater than width than it is
+                  truncated.
+
+    Return value  None.
+
+    See Also      nd_printf, nd_puts, nd_width_printf
+
+    popup
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Raises a window to the top of the screen.
+
+    Syntax        void win_c::popup(void);
+
+    Remarks       popup raises a window to the top of the screen.  The
+                  window will have the highest z position and all the
+                  windows below will be shifted down one.  All the windows
+                  that are above or below the window that is raised to the
+                  top will be updated.
+
+    Return value  None.
+
+    redisplay
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Redraws an entire window on the screen.
+
+    Syntax        void win_c::redisplay(void);
+
+    Remarks       redisplay redraws the entire window on the screen.  This
+                  call is used if the screen gets messed up.  This function
+                  redraws the shadow, frame, and text region.
+
+    Return value  None.
+
+    See Also      redisplay_text
+
+    redisplay_text
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Redraws the text region of a window on the screen.
+
+    Syntax        void win_c::redisplay_text(void);
+
+    Remarks       redisplay_text redraws the text region of a window on the
+                  screen.  This call is often used after the non-display
+                  printing functions have been called to show the new
+                  output.
+
+    Return value  None.
+
+    See Also      redisplay
+
+    resize
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Resizes the window.
+
+    Syntax        void win_c::resize(uchar side, uchar width);
+
+    Remarks       resize changes the width or height of a window.  One side
+                  is specified by TOP, LEFT, BOTTOM, and RIGHT and the new
+                  width from that side to the opposite side.
+
+    Return value  None.
+
+    See Also      explode, implode
+
+    scroll_down
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll text window down.
+
+    Syntax        void win_c::scroll_down(void);
+
+    Remarks       scroll_down scrolls the entire text window down by one.
+                  The new line at the top of the window will be blank and
+                  will be the same color as the current foreground and
+                  background colors.
+
+    Return value  None.
+
+    See Also      scroll_left, scroll_part_down, scroll_part_left,
+                  scroll_part_right, scroll_part_up, scroll_right, scroll_up
+
+    scroll_left
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll text window left.
+
+    Syntax        void win_c::scroll_left(void);
+
+    Remarks       scroll_left scrolls the entire text window left by one.
+                  The new column at the right of the window will be blank
+                  and will be the same color as the current foreground and
+                  background colors.
+
+    Return value  None.
+
+    See Also      scroll_down,  scroll_right, scroll_up
+
+    scroll_off
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Turn off text scrolling for window.
+
+    Syntax        void win_c::scroll_off(void);
+
+    Remarks       scroll_off turns off text scrolling.  Window will not
+                  scroll when output goes past the last line of the window.
+
+    Return value  None.
+
+    See Also      scroll_on
+
+    scroll_on
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Turn on text scrolling for window.
+
+    Syntax        void win_c::scroll_on(void);
+
+    Remarks       scroll_on turns on text scrolling.  Window will scroll
+                  when output goes past the last line of the window.
+
+    Return value  None.
+
+    See Also      scroll_off
+
+
+    scroll_part_down
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll a region of the text window down.
+
+    Syntax        void win_c::scroll_part_down(uchar topx, uchar topy,
+                                               uchar botx, uchar boty);
+
+    Remarks       scroll_part_down scrolls a region of the text window down
+                  by one.  The coordinates specified are relative to the
+                  text window.  The new line at the top of the window will
+                  be blank and will be the same color as the current
+                  foreground and background colors.
+
+    Return value  None.
+
+    See Also      scroll_down, scroll_left, scroll_part_left,
+                  scroll_part_right, scroll_part_up, scroll_right, scroll_up
+
+    scroll_part_left
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll a region of the text window left.
+
+    Syntax        void win_c::scroll_part_left(uchar topx, uchar topy,
+                                               uchar botx, uchar boty);
+
+    Remarks       scroll_part_left scrolls a region of the text window left
+                  by one.  The coordinates specified are relative to the
+                  text window.  The new column at the right of the window
+                  will be blank and will be the same color as the current
+                  foreground and background colors.
+
+    Return value  None.
+
+    See Also      scroll_down, scroll_left, scroll_part_down,
+                  scroll_part_right, scroll_part_up, scroll_right, scroll_up
+
+    scroll_part_right
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll a region of the text window right.
+
+    Syntax        void win_c::scroll_part_right(uchar topx, uchar topy,
+                                                uchar botx, uchar boty);
+
+    Remarks       scroll_part_right scrolls a region of the text window
+                  right by one.  The coordinates specified are relative to
+                  the text window.  The new column at the left of the window
+                  will be blank and will be the same color as the current
+                  foreground and background colors.
+
+    Return value  None.
+
+    See Also      scroll_down, scroll_left, scroll_part_down,
+                  scroll_part_left, scroll_part_up, scroll_right, scroll_up
+
+    scroll_part_up
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll a region of the text window up.
+
+    Syntax        void win_c::scroll_part_up(uchar topx, uchar topy,
+                                             uchar botx, uchar boty);
+
+    Remarks       scroll_part_up scrolls a region of the text window up by
+                  one.  The coordinates specified are relative to the text
+                  window.  The new line at the bottom of the window will be
+                  blank and will be the same color as the current foreground
+                  and background colors.
+
+    Return value  None.
+
+    See Also      scroll_down, scroll_left, scroll_part_down,
+                  scroll_part_left, scroll_part_right, scroll_right,
+                  scroll_up
+
+    scroll_right
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll text window right.
+
+    Syntax        void win_c::scroll_left(void);
+
+    Remarks       scroll_right scrolls the entire text window right by one.
+                  The new column at the left of the window will be blank and
+                  will be the same color as the current foreground and
+                  background colors.
+
+    Return Value  None.
+
+    See Also      scroll_down, scroll_left, scroll_part_down,
+                  scroll_part_left, scroll_part_right, scroll_part_up,
+                  scroll_up
+
+    scroll_up
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Scroll text window up.
+
+    Syntax        void win_c::scroll_up(void);
+
+    Remarks       scroll_up scrolls the entire text window up by one.  The
+                  new line at the bottom of the window will be blank and
+                  will be the same color as the current foreground and
+                  background colors.
+
+    Return Value  None.
+
+    See Also      scroll_down, scroll_left, scroll_part_down,
+                  scroll_part_left, scroll_part_right, scroll_part_up,
+                  scroll_right
+
+    set_attr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the window attribute.
+
+    Syntax        void win_c::set_attr(ushort attr);
+
+    Remarks       set_attr sets a new attribute for a window.  This function
+                  is used internally mainly and should not be used
+                  otherwise.
+
+    Return value  None.
+
+    See Also      get_attr
+
+    set_pos
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets a new z position for a window.
+
+    Syntax        void win_c::set_pos(uchar pos);
+
+    Remarks       set_pos sets a new z position for a window.  This function
+                  is used internally mainly and should not be used
+                  otherwise.
+
+    Return value  None.
+
+    See Also      popup
+
+    slide
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Slides a window from one coordinate to another.
+
+    Syntax        void win_c::slide(uchar x, uchar y);
+
+    Remarks       This function slides the window horizontally and
+                  vertically one position at a time until the window reaches
+                  the new coordinates. The x and y coordinates are absolute
+                  to the screen are where the top left hand corner of the
+                  frame or if there is no frame it is the top left hand
+                  corner of the text region.
+
+    Return value  None.
+
+    See Also      move
+
+    read_attr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Reads the attributes from a window into a buffer.
+
+    Syntax        void win_c::read_attr(uchar *buffer, uchar x, uchar y,
+                                        ushort len);
+
+    Remarks       read_attr reads the attributes of text into the buffer
+                  starting on the column of x and row of y.  Len is the
+                  number of attributes to read.  read_attr assumes that the
+                  buffer passed to it is large enough to hold the attributes
+                  read.
+
+    Return value  none.
+
+    See Also      read_char, read_char_and_attr
+
+    read_char
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Reads the characters from a window into a buffer.
+
+    Syntax        void win_c::read_char(uchar *buffer, uchar x, uchar y,
+                                        ushort len);
+
+    Remarks       read_char reads the characters of text into the buffer
+                  starting on the column of x and row of y.  Len is the
+                  number of characters to read.  read_char assumes that the
+                  buffer passed to it is large enough to hold the characters
+                  read.
+
+    Return value  none.
+
+    See Also      read_attr, read_char_and_attr
+
+    read_char_and_attr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Reads the characters and attributes from a window into a
+                  buffer.
+
+    Syntax        void win_c::read_char_and_attr(uchar *buffer, uchar x,
+                                                 uchar y, ushort len);
+
+    Remarks       read_char_and_attr reads the characters and attributes of
+                  text into the buffer starting on the column of x and row
+                  of y. Len is the number of characters and attributes to
+                  read. read_char_and_attr assumes that the buffer passed to
+                  it is large enough to hold the attributes read.  The
+                  buffer should be twice len because and character and
+                  attribute takes up two bytes.
+
+    Return value  none.
+
+    See Also      read_attr, read_char
+
+    rj_printf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Right justifies formatted output to the window.
+
+    Syntax        void win_c::rj_printf(uchar x, uchar y, char *fmt, ...);
+
+    Remarks       rj_printf right justifies text on line y on column x.
+
+    Return value  None.
+
+    See Also      cntr_printf, col_cntr_printf, wprintf
+
+    text_background
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Selects a new text background color for the window.
+
+    Syntax        void win_c::text_background(uchar b_color);
+
+    Remarks       text_background selects a new text background color for
+                  the window.  Valid colors for this function are BLACK
+                  through LIGHTGRAY.
+
+    Return value  None.
+
+    See Also      text_color
+
+    text_color
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Selects a new text foreground color for the window.
+
+    Syntax        void win_c::text_color(uchar f_color);
+
+
+    Remarks       text_color selects a new text foreground color for the
+                  window. Valid colors for this function are BLACK through
+                  WHITE with blinking.
+
+    Return value  None.
+
+    See Also      text_background
+
+    text_height
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the height of the text region of the window.
+
+    Syntax        uchar win_c::text_height(void);
+
+    Remarks       text_height returns the height of the text region of the
+                  window.
+
+    Return value  None.
+
+    See Also      text_width
+
+    text_width
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the width of the text region of the window.
+
+    Syntax        uchar win_c::text_width(void);
+
+    Remarks       text_width returns the width of the text region of the
+                  window.
+
+    Return value  None.
+
+    See Also      text_height
+
+    text_x_relative
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Converts a absolute screen coordinate to the coordinate
+                  relative to the window.
+
+    Syntax        uchar win_c::text_x_relative(uchar abs_x);
+
+    Remarks       text_x_relative converts the absolute screen coordinate
+                  to the corresponding one inside the window's text area.
+
+    Return value  text_x_relative returns the x coordinate relative to the
+                  window's text area.  If the absolute coordinate is not
+                  inside this area it returns zero.
+
+    See Also      frame_x_relative, frame_y_relative, text_y_relative
+
+    text_y_relative
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Converts a absolute screen coordinate to the coordinate
+                  relative to the window.
+
+    Syntax        uchar win_c::text_y_relative(uchar abs_y);
+
+    Remarks       text_y_relative converts the absolute screen coordinate
+                  to the corresponding one inside the window's text area.
+
+    Return value  text_y_relative returns the y coordinate relative to the
+                  window's text area.  If the absolute coordinate is not
+                  inside this area it returns zero.
+
+    See Also      frame_x_relative, frame_y_relative, text_x_relative
+
+    title_change
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Changes the title of the window.
+
+    Syntax        void win_c::title_change(uchar *title);
+
+    Remarks       title_change changes the title and redraws the part of the
+                  frame containing it.  If the title is longer than the
+                  width of the window than it will be truncated when the
+                  frame is redrawn.
+
+    Return value  None.
+
+    title_textbackground
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Selects a new title background color for the window.
+
+    Syntax        void win_c::title_textbackground(uchar b_color);
+
+    Remarks       title_textbackground selects a new title background color
+                  for the window.  Valid colors for this function are BLACK
+                  through LIGHTGRAY.
+
+    Return value  None.
+
+    See Also      title_textcolor
+
+    title_textcolor
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Selects a new title foreground color for the window.
+
+    Syntax        void win_c::title_textcolor(uchar f_color);
+
+
+    Remarks       title_textcolor selects a new title foreground color for
+                  the window. Valid colors for this function are BLACK
+                  through WHITE with blinking.
+
+    Return value  None.
+
+    See Also      title_textbackground
+
+    unhide
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Unhides a text window on the screen
+
+    Syntax        void win_c::unhide(void);
+
+    Remarks       unhide causes a window to reappear on the screen.  The
+                  windows that lay above and below the window that is
+                  unhidden are updated to reflect the presence of the window
+                  again.  The unhidden window retains it's z position when
+                  it was hidden.
+
+    Return value  None.
+
+    See Also      hide
+
+    vscroll_create
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Creates a vertical scroll bar on the right side of the
+                  frame.
+
+    Syntax        void win_c::vscroll_create(uchar scroll_fcolor,
+                                             uchar scroll_bcolor,
+                                             ushort cur, ushort max);
+
+    Remarks       vscroll_create creates a scroll bar on the right side of
+                  the frame.  The scroll bar is like a percentage bar where
+                  the minimum value is one and the maximum is max.  The
+                  colors of the scroll bar are the set to scroll_fcolor and
+                  scroll_bcolor.
+
+    Return value  None.
+
+    See Also      vscroll_destroy, vscroll_left, vscroll_right,
+                  vscroll_update_cur, vscroll_cur_and_max
+
+    vscroll_destroy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Destroys a vertical scroll bar
+
+    Syntax        void win_c::vscroll_destroy(void);
+
+    Remarks       vscroll_destroy destroys the vertical scroll bar and
+                  restores the frame where the scroll bar existed.
+
+    Return value  None.
+
+    See Also      vscroll_create, vscroll_left, vscroll_right,
+                  vscroll_update_cur, vscroll_cur_and_max
+
+    vscroll_down
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Shifts the vertical scroll bar position down a certain
+                  number of positions.
+
+    Syntax        void win_c::vscroll_down(ushort num);
+
+    Remarks       Shifts the vertical scroll bar position down a certain
+                  number of positions.  If the position is less than one
+                  than the position is set to one.  The scroll bar is
+                  updated to reflect this position.
+
+    Return value  None.
+
+    See Also      vscroll_create, vscroll_destroy, vscroll_right,
+                  vscroll_update_cur, vscroll_cur_and_max
+
+    vscroll_mouse_move
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Checks mouse events for any that apply to the scroll bar
+                  that belongs to this window.
+
+    Syntax        ushort win_c::vscroll_mouse_move(void);
+
+    Remarks       vscroll_mouse_move processes the mouse events that have
+                  occured and adjusts the scroll bar accordingly.
+
+    Return value  vscroll_mouse_move returns the new position on the scroll
+                  bar.  The program should than adjust whatever data is
+                  represented by the scroll bar.  If no events have occured
+                  that reflect the scroll bar zero is returned.
+
+    vscroll_up
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Shifts the vertical scroll bar position up a certain
+                  number of positions.
+
+    Syntax        void win_c::vscroll_up(ushort num);
+
+    Remarks       Shifts the vertical scroll bar position up a certain
+                  number of positions.  If the position is less than one
+                  than the position is set to one.  The scroll bar is
+                  updated to reflect this position.
+
+    Return value  None.
+
+    See Also      vscroll_create, vscroll_destroy, vscroll_left,
+                  vscroll_update_cur, vscroll_cur_and_max
+
+    vscroll_update_cur
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the new vertical scroll bar position.
+
+    Syntax        void win_c::vscroll_update_cur(ushort vscroll_cur);
+
+    Remarks       Sets the new vertical scroll bar position and updates the
+                  scroll bar.
+
+    Return value  None.
+
+    See Also      vscroll_create, vscroll_destroy, vscroll_left,
+                  vscroll_right, vscroll_cur_and_max
+
+    vscroll_update_cur_and_max
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the new vertical scroll bar position and max
+                  position.
+
+    Syntax        void win_c::vscroll_update_cur_and_max(ushort vscroll_cur,
+                                                         ushort vscroll_max
+                                                         );
+
+    Remarks       Sets the new vertical scroll bar position, maximum
+                  position, and updates the scroll bar.
+
+    Return value  None.
+
+    See Also      vscroll_create, vscroll_destroy, vscroll_left,
+                  vscroll_right, vscroll_cur
+
+    where_win_x
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the column on the screen where the window is.
+
+    Syntax        uchar win_c::where_win_x(void);
+
+    Remarks       where_win_x returns the column on the screen where the
+                  window is.  This coordinate returned is absolute to the
+                  screen.
+
+    Return value  Returns the x coordinate of the window on the screen.
+
+    See Also      where_win_y
+
+    where_win_y
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the row on the screen where the window is.
+
+    Syntax        uchar win_c::where_win_y(void);
+
+    Remarks       where_win_y returns the row on the screen where the window
+                  is.  This coordinate returned is absolute to the screen.
+
+    Return value  Returns the y coordinate of the window on the screen.
+
+    See Also      where_win_x
+
+    where_x
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the horizontal cursor position within the window.
+
+    Syntax        uchar win_c::where_x(void);
+
+    Remarks       where_x returns the x coordinate of the current cursor
+                  position within the text region of the window.  The
+                  coordinate returned is relative to the text region of the
+                  window.
+
+    Return        Returns the x coordinate of the cursor.
+
+    See Also      where_y
+
+    where_y
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the vertical cursor position within the window.
+
+    Syntax        uchar win_c::where_y(void);
+
+    Remarks       where_y returns the y coordinate of the current cursor
+                  position within the text region of the window.  The
+                  coordinate returned is relative to the text region of
+                  the window.
+
+    Return        Returns the y coordinate of the cursor.
+
+    See Also      where_x
+
+    width_printf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes length adjusted formatted output to the window.
+
+    Syntax        void win_c::width_printf(uchar width, char *fmt, ...);
+
+    Remarks       width_printf writes formatted output to the window.  If
+                  the length of the text is less than width than it is
+                  padded with spaces.  If the length is greater than width
+                  than it is truncated.
+
+    Return value  None.
+
+    See Also      wprintf, width_puts
+
+    width_puts
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a length adjusted null terminated string to the
+                  window.
+
+    Syntax        void win_c::width_puts(uchar width, char *s);
+
+    Remarks       width_puts writes the null terminated string s to the
+                  window. If the length of the text is less than width than
+                  it is padded with spaces.  If the length is greater than
+                  width than it is truncated.
+
+    Return value  None.
+
+    See Also      wprintf, width_printf
+
+    wprintf
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes formatted output to the window.
+
+    Syntax        void win_c::wprintf(char *fmt, ...);
+
+    Remarks       wprintf writes formatted output to the window like the
+                  printf function.  It uses the current foreground and
+                  background colors of the window for the new text.
+
+    Return value  None.
+
+    See Also      wputch, wputs
+
+    wputch
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a character to the window.
+
+    Syntax        void win_c::wputch(uchar ch);
+
+    Remarks       wputch writes the character ch to window.  It uses the
+                  current foreground and background colors of the window
+                  for the new character.
+
+    Return value  None.
+
+    See Also      wprintf, wputs
+
+    wputctrlch
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a control character to the window.
+
+    Syntax        void win_c::wputctrlch(uchar ch);
+
+    Remarks       wputctrlch writes the character ch to window.  It uses the
+                  current foreground and background colors of the window for
+                  the new character.  This function will not translate any
+                  characters such as linefeed and carriage return.
+
+    Return value  None.
+
+    See Also      wprintf, wputs, wputch
+
+    wputs
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes a string to the window.
+
+    Syntax        void win_c::wputs(char *s);
+
+    Remarks       wputs write the null-terminated string s to the window.
+                  It uses the current foreground and background colors of
+                  the window for the new text.
+
+    Return value  None.
+
+    See Also      wprintf, wputch
+
+    write_text_to_file
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Writes contents of the text window to a ascii file.
+
+    Syntax        uchar win_c::write_text_to_file(uchar *filename,
+                                                  uchar linefeed);
+
+    Remarks       The filename must be closed before calling this function
+                  and the file handle is closed by this function before it
+                  returns. If linefeed is a non-zero than a \n is written to
+                  the file after each row of text is written.
+
+    Return value  Upon success write_text_to_file returns a non-zero.
+
+    WINDOW CLASS INPUT FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        Windows are not complete without controlled ways to input data from
+    the user.  TI/2 has an extensive set of functions to input different
+    types of data.  These functions are part of the win_c class and are
+    called just like the other functions.  All input functions use the input
+    colors specified for the window by the input_init function.
+
+    ** These functions where mainly used for the old data entry style, but
+       have been replaced by a more powerful form system.  These functions
+       may be removed in the first official release to cut down on the size
+       of the library.
+
+    input_4d_addr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a Fidonet style address.
+
+    Syntax        void win_c::input_4d_addr(uchar x, uchar y,
+                                            faddr_t *addr);
+
+    Remarks       input_4d_addr inputs a Fidonet style address.  This
+                  function will not allow the user to input an incorrect
+                  address.  The structure for faddr_t is :
+
+                  typedef struct {
+                                   ushort zone;
+                                   ushort net;
+                                   ushort node;
+                                   ushort point;
+                                 } faddr_t;
+
+                  faddr_t is defined in the ti2.h and can be used for
+                  declaration of your Fidonet address variables.  The x and
+                  y are the coordinates inside the window where the input
+                  will take place. addr is the address of a Fidonet address
+                  variable.
+
+    Return value  None.
+
+
+    input_byte
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a byte.
+
+    Syntax        void win_c::input_byte(uchar x, uchar y, uchar *num,
+                                         uchar min, uchar max);
+
+    Remarks       input_byte inputs a byte (unsigned char) from the user.
+                  x and y are the coordinates inside the window where the
+                  input will take place.  min and max are the highest and
+                  lowest numbers that the user will be allowed to input.
+                  num is the address of a byte (unsigned char).
+
+    Return value  None.
+
+    See Also      input_ulong, input_ushort
+
+    input_frmt_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a formatted string.
+
+    Syntax        void win_c::input_frmt_string(uchar x, uchar y,
+                                                uchar *str,
+                                                uchar *ctrl_str);
+
+    Remarks       input_frmt_string inputs a string from the user only
+                  allowing them to type alpha and numeric characters in
+                  certain places.  x and y are the coordinates inside the
+                  window where the input will take place.  str is the string
+                  that will be filled by the user.  ctrl_str is what formats
+                  the input.  This function will let the user input a number
+                  wherever a '#' is in the control and string and a
+                  character wherever an 'A' or 'a' is. An uppercase A forces
+                  their characters to be upcased and a lowercase a forces
+                  their characters to be downcased.  An example of the
+                  control string for inputting a phone number would be
+                  "###-###-####".  An example of inputting a first name with
+                  the first letter capitalized and the other characters
+                  lowercase would be "Aaaaaaaaaaaaaa".
+
+    Return value  None.
+
+    See Also      input_string, input_upcase_string
+
+    input_hhmmss
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a time.
+
+    Syntax        void win_c::input_hhmmss(uchar x, uchar y, ulong *t);
+
+    Remarks       input_hhmmss inputs a 24 hour format time.  x and y are
+                  the coordinates where the input inside the window will
+                  take place.  t is the address of a unsigned long integer
+                  which will hold the time.  The time is returned in the
+                  format of HHMMSS. An example of t when the time is
+                  13:30:15 (1:30 P.M. with 15 seconds) would be 133015.
+
+    Return value  None.
+
+    input_init
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the colors used by input functions in a window.
+
+    Syntax        void win_c::input_init(uchar input_norm_fcolor,
+                                         uchar input_norm_bcolor,
+                                         uchar input_high_fcolor,
+                                         uchar input_high_bcolor,
+                                         uchar input_blank_fcolor,
+                                         uchar input_blank_bcolor,
+                                         uchar input_text_fcolor,
+                                         uchar input_text_bcolor);
+
+    Remarks       input_init sets the colors used by input functions in a
+                  window. By setting the colors used for all the input
+                  functions in a window it helps to cut down on the
+                  parameters that must be passed for each input function
+                  call.  norm is the color of the text when being edited
+                  and when not highlighted.  high is the color of the
+                  highlighted text when first being edited. blank is the
+                  color of the blanks in an input field.  text is the color
+                  of the text when the input function exits.
+
+    Return value  None.
+
+    input_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a string of a specific length.
+
+    Syntax        void win_c::input_string(uchar x, uchar y, char *s,
+                                           uchar max_len);
+
+    Remarks       input_string inputs a string of max_len.  x and y are the
+                  coordinates inside the window where the input will take
+                  place.
+
+    Return value  None.
+
+    See Also      input_frmt_string, input_upcase_string
+
+    input_toggle_uchar_bit_yes_no
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Toggles a bit yes or no.
+
+    Syntax        void win_c::input_toggle_uchar_bit_yes_no(uchar x,
+                                                            uchar y,
+                                                            uchar *toggle,
+                                                            uchar bit);
+
+    Remarks       input_toggle_uchar_bit_yes_no will toggle a bit on or off.
+                  x and y are the coordinates of where the input will take
+                  place.  toggle is the address of the unsigned char whose
+                  bit will be toggled.  bit is the bit that will be toggled.
+                  An example of bit is (1<<1) which would be the bit one.
+
+    Return value  None.
+
+    See Also      input_toggle_ulong_bit_yes_no,
+                  input_toggle_ushort_bit_yes_no
+
+    input_toggle_uchar_yes_no
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Toggles a unsigned char yes or no.
+
+    Syntax        void win_c::input_toggle_uchar_yes_no(uchar x, uchar y,
+                                                        uchar *toggle);
+
+    Remarks       input_toggle_uchar_yes_no toggles a unsigned char yes or
+                  no. no is defined as zero and yes is defined as one.  x
+                  and y are the coordinates inside the window where the
+                  input will take place.  toggle is the address of a
+                  unsigned char.
+
+    Return value  None
+
+
+    input_toggle_ulong_bit_yes_no
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Toggles a bit yes or no.
+
+    Syntax        void win_c::input_toggle_ulong_bit_yes_no(uchar x,
+                                                            uchar y,
+                                                            ulong *toggle,
+                                                            ulong bit);
+
+    Remarks       input_toggle_ulong_bit_yes_no will toggle a bit on or off.
+                  x and y are the coordinates of where the input will take
+                  place.  toggle is the address of the unsigned long int
+                  whose bit will be toggled.  bit is the bit that will be
+                  toggled. An example of bit is (1<<1) which would be the
+                  bit one.
+
+    Return value  None.
+
+    See Also      input_toggle_uchar_bit_yes_no,
+                  input_toggle_ushort_bit_yes_no
+
+    input_toggle_ushort_bit_yes_no
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Toggles a bit yes or no.
+
+    Syntax        void win_c::input_toggle_ushort_bit_yes_no(uchar x,
+                                                             uchar y,
+                                                             ushort *toggle,
+                                                             ushort bit);
+
+    Remarks       input_toggle_ushort_bit_yes_no will toggle a bit on or
+                  off. x and y are the coordinates of where the input will
+                  take place.  toggle is the address of the unsigned short
+                  int whose bit will be toggled.  bit is the bit that will
+                  be toggled. An example of bit is (1<<1) which would be the
+                  bit one.
+
+    Return value  None.
+
+    See Also      input_toggle_uchar_bit_yes_no,
+                  input_toggle_ulong_bit_yes_no
+
+    input_ulong
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a unsigned long int.
+
+    Syntax        void win_c::input_ulong(uchar x, uchar y, ulong *num,
+                                          ulong min, ulong max);
+
+    Remarks       input_ulong inputs a unsigned long int from the user.
+                  x and y are the coordinates inside the window where the
+                  input will take place.  min and max are the highest and
+                  lowest numbers that the user will be allowed to input.
+                  num is the address of a unsigned long int.
+
+    Return value  None.
+
+    See Also      input_byte, input_ushort
+
+
+    input_upcase_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs an upcased string of a specific length.
+
+    Syntax        void win_c::input_upcase_string(uchar x, uchar y, char *s,
+                                                  uchar max_len);
+
+    Remarks       input_upcase_string inputs an upcased string of max_len.
+                  x and y are the coordinates inside the window where the
+                  input will take place.
+
+    Return value  None.
+
+    See Also      input_frmt_string, input_string
+
+    input_ushort
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inputs a unsigned short int.
+
+    Syntax        void win_c::input_ulong(uchar x, uchar y, ulong *num,
+                                          ulong min, ulong max);
+
+    Remarks       input_ulong inputs a unsigned long int from the user.
+                  x and y are the coordinates inside the window where the
+                  input will take place.  min and max are the highest and
+                  lowest numbers that the user will be allowed to input.
+                  num is the address of a unsigned long int.
+
+    Return value  None.
+
+    See Also      input_byte, input_ulong
+
+    MENU CLASS FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        Pull down menus are a necessity in any program that deals with many
+    options and commands.  TI/2 has was designed to make menu creation as
+    easy as possible.  When creating a menu there are two types of IDs.
+    There are menu command and submenu IDs.  When designing a pull down menu
+    it is recommended that you use #define statements to keep the IDs from
+    becoming confusing.  Here is an example of the #define statement section
+    for a menu.
+
+    /* Submenus */
+    #define SM_FILE   1
+    #define SM_EDIT   2
+
+    /* Menucmds on File menu */
+    #define MC_NEW      1
+    #define MC_OPEN     2
+    #define MC_SAVE     3
+    #define MC_SAVE_AS  4
+    #define MC_SAVE_ALL 5
+    #define MC_CHNG_DIR 6
+    #define MC_PRINT    7
+    #define MC_SHELL    8
+    #define MC_QUIT     9
+
+    /* Menucmds on the Edit menu */
+    #define MC_UNDO     10
+    #define MC_REDO     11
+    #define MC_CUT      12
+    #define MC_COPY     13
+    #define MC_PASTE    14
+    #define MC_CLEAR    15
+    #define MC_CPY_XMPL 16
+    #define MC_CLIP_BRD 17
+
+    Notice the style of the define section.  All submenus are preceded by a
+    SM_ and all menu commands are preceded by a MC_.  No two submenus can
+    have the same ID number.  No two menu commands can have the same ID
+    number.  No menu command or submenu ID can be less than one.  It is
+    recommended that you start numbering at one and go up sequentially.
+
+    Below are the functions used to create, use, and destroy a menu.
+
+    add_menucmd_func
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Add a function menu command to a submenu.
+
+    Syntax        void menu_c::add_menucmd_func(ushort parent_submenu_id,
+                                                ushort id, uchar *title,
+                                                uchar hotkey);
+
+    Remarks       add_menucmd_func adds a function to a submenu.  The
+                  parent_submenu_id is the id of the submenu which will have
+                  this menu command on it.  id is the unique id of the menu
+                  command.  title is the title of the menu command.  A tilde
+                  (~) should be placed in front of the character which will
+                  be high-lighted.  hotkey is the character that is hotkeyed
+                  for this menu command.  If a function menu command is
+                  chosen by the user than the id of the menu command is
+                  return by the load function.
+
+    Return value  None.
+
+    See Also      add_menucmd_separator, add_menucmd_submenu
+
+    add_menucmd_separator
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a separator line to a submenu.
+
+    Syntax        void menu_c::add_menucmd_separator(ushort parent_id,
+                                                     ushort id);
+
+    Remarks       add_menucmd_separator adds a separator line to a submenu.
+                  parent_id is the id of the submenu which the line
+                  will be added to.  id is the unique id for the submenu.
+
+    Return value  None.
+
+    See Also      add_menucmd_function, add_menucmd_submenu
+
+    add_menucmd_submenu
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Adds a submenu to a submenu.
+
+    Syntax        void menu_c::add_menucmd_submenu(ushort parent_submenu_id,
+                                                   ushort id,
+                                                   ushort submenu_id,
+                                                   uchar *title,
+                                                   uchar hotkey);
+
+    Remarks       add_menucmd_submenu adds a submenu to a submenu.  The
+                  parent_submenu_id is the id of the submenu which will have
+                  this submenu added to it.  id is the unique id of the menu
+                  command which loads the submenu.  submenu_id is the id of
+                  the new submenu. title is the title of the menu command. A
+                  tilde (~) should be placed in front of the character which
+                  will be highlighted.  hotkey is the character that is
+                  hotkeyed for this menu command.  When a submenu menu
+                  command is chosen it loads the submenu which will appear
+                  just below and to the right of the menu command on the
+                  screen.
+
+    Return value  None.
+
+    See Also      add_submenu_function, add_submenu_separator
+
+    add_submenu
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a submenu off of the main title bar.
+
+    Syntax        void menu_c::add_submenu(ushort id, uchar title_pos,
+                                           uchar *title, uchar hotkey);
+
+    Remarks       add_submenu adds a submenu off of the main title bar.  id
+                  should be a unique number.  For more information on ids
+                  and easy ways to define them see the menu class functions.
+                  The title position is the offset on the bar where the
+                  title for submenu will appear.  The title is string that
+                  will appear on the title bar.  A tilde (~) should be
+                  placed in front of the character which will be
+                  highlighted.  hotkey is the character which is hotkeyed
+                  for this submenu.
+
+    Return value  None.
+
+    See Also      submenu_active, submenu_inactive
+
+    create
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Creates a pull down menu.
+
+    Syntax        void menu_c::create(uchar line, hotkey_fcolor,
+                                      uchar norm_fcolor, uchar norm_bcolor,
+                                      uchar high_fcolor, uchar high_bcolor,
+                                      uchar inactive_fcolor,
+                                      uchar inactive_bcolor,
+                                      uchar frame_fcolor,
+                                      uchar frame_bcolor);
+
+    Remarks       create initializes a pulldown menu.  A pull down menu
+                  occupies a row which is line.  hotkey_fcolor is the
+                  textcolor of the one character that is highlighted for
+                  the user to press. Normal menu commands and submenus use
+                  the foreground and background colors stored in norm_fcolor
+                  and norm_bcolor. Highlighted menu commands and submenus
+                  use the foreground and background colors stored in
+                  high_fcolor and high_bcolor. Inactive menu commands and
+                  submenus use the foreground and background colors stored
+                  in inactive_fcolor and inactive_bcolor.  The frame of the
+                  window that surrounds the menu commands of a submenu is
+                  the foreground and background color stored in frame_fcolor
+                  and frame_bcolor.
+
+    Return value  None.
+
+    See Also      destroy
+
+    destroy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Destroys a pull down menu.
+
+    Syntax        void menu_c::destroy(void);
+
+    Remarks       destroy deallocates all memory that is used by a pull down
+                  menu.
+
+    Return value  None.
+
+    See Also      create
+
+    load
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Loads a pull down menu.
+
+    Syntax        ushort menu_c::load(void);
+
+    Remarks       load loads a pull down menu.  The user will navigate the
+                  menu and chosen submenu or functions.
+
+    Return value  When the user presses escape to close the pull down menu a
+                  zero is returned.  If the user chooses a function menu
+                  command than the unique id for that menu command is
+                  returned. The value which load returns should be processed.
+                  If the value is a none zero than you should process it and
+                  reload the menu.
+
+    menucmd_active
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Reactivates an inactive menu command.
+
+    Syntax        void menu_c::menucmd_active(ushort id);
+
+    Remarks       menucmd_active activates the menu command with the same id
+                  as the one in the parameter id.  This function is used for
+                  both function menu commands and submenu menu commands.
+
+    Return value  None.
+
+    See Also      menucmd_inactive
+
+    menucmd_inactive
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inactivates a menu command.
+
+    Syntax        void menu_c::menucmd_inactive(ushort id);
+
+    Remarks       menucmd_inactive inactivates the menu command with the
+                  same id as the one in the parameter id.  This function is
+                  used for both function menu commands and submenu menu
+                  commands.
+
+    Return value  None.
+
+    See Also      menucmd_active
+
+    submenu_active
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Reactivates an inactive submenu.
+
+    Syntax        void menu_c::submenu_active(ushort id);
+
+    Remarks       submenu_active activates the submenu with the same id as
+                  the one in the parameter id.  This function should be used
+                  for submenu directly off the bar.  If the submenu is a
+                  submenu of a submenu than use the menucmd_active to
+                  activate the menu command which corresponds to the
+                  submenu.
+
+    Return value  None.
+
+    See Also      submenu_inactive, menucmd_active, menucmd_inactive
+
+
+    submenu_inactive
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Inactivates a submenu.
+
+    Syntax        void menu_c::submenu_inactive(ushort id);
+
+    Remarks       submenu_inactive inactivates the submenu with the same id
+                  as the one in the parameter id.  This function should be
+                  used for submenu directly off the bar.  If the submenu is
+                  a submenu of a submenu than use the menucmd_inactive to
+                  inactivate the menu command which corresponds to the
+                  submenu.
+
+    Return value  None.
+
+    See Also      submenu_active, menucmd_active, menucmd_inactive
+
+    FORM CLASS FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+        Windows and pull down menus can only make a program seem so
+    impressive. A form is a easy way of cycling through fields and
+    inputting data. The inputting and mouse control is entirely taken care
+    of by TI/2.  Like the menu system, forms are created easily with the
+    use of IDs.  Below are a list of functions used to create, load, and
+    destroy forms.
+
+    add_4d_addr
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds Fidonet style address field to form.
+
+    Syntax        void form_c::add_4d_addr(ushort id, uchar title_x,
+                                           uchar title_y, uchar *title,
+                                           uchar entry_x, uchar entry_y,
+                                           uchar view_len);
+
+    Remarks       add_4d_addr adds a Fidonet address field to the form.  The
+                  id is a unique number that identifies the field.  The
+                  title is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the address takes place
+                  inside the window at entry_x, entry_y.  The address is
+                  inputted in a view window.  view_len is the length of the
+                  address that will be displayed at once.  The input will
+                  scroll inside this view.
+
+    Return value  none.
+
+    See Also      set_4d_addr_var, string_colors
+
+    add_button
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a click button to the form.
+
+    Syntax        void form_c::add_button(ushort id, uchar x, uchar y,
+                                          uchar *title);
+
+    Remarks       add_button adds a click button to the form.  The id is a
+                  unique number that identifies the field.  The button with
+                  the title is displayed at x, y in the window.
+
+    Return value  none.
+
+    See Also      set_button_var, button_colors, load
+
+    add_byte
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a byte field to the form.
+
+    Syntax        void form_c::add_byte(ushort id, uchar title_x,
+                                        uchar title_y, uchar *title,
+                                        uchar entry_x, uchar entry_y,
+                                        uchar min_num, uchar max_num);
+
+    Remarks       add_byte adds a byte field to the form.  The id is a
+                  unique number that identifies the field.  The title
+                  is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the byte takes place
+                  inside the window at entry_x, entry_y.  The number
+                  inputted can be no greater than max_num and no less
+                  than min_num.  The range of min_num and max_num is
+                  0 to 255.
+
+    Return value  none.
+
+    See Also      set_byte_var, number_colors
+
+    add_char
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a byte field to the form.
+
+    Syntax        void form_c::add_char(ushort id, uchar title_x,
+                                        uchar title_y, uchar *title,
+                                        uchar entry_x, uchar entry_y,
+                                        char min_num, char max_num);
+
+    Remarks       add_char adds a char field to the form.  The id is a
+                  unique number that identifies the field.  The title
+                  is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the byte takes place
+                  inside the window at entry_x, entry_y.  The number
+                  inputted can be no greater than max_num and no less
+                  than min_num.  The range of min_num and max_num is
+                  -128 to 127.
+
+    Return value  none.
+
+    See Also      set_char_var, number_colors
+
+    add_checkbox
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds checkbox field to the form.
+
+    Syntax        void form_c::add_checkbox(ushort id, uchar title_x,
+                                            uchar title_y, uchar *title,
+                                            uchar boxtopx, uchar boxtopy,
+                                            uchar boxbotx, uchar boxboty);
+
+    Remarks       add_checkbox adds a checkbox field to the form.  A
+                  checkbox is a group of variables that can be individually
+                  toggled on and off.  The id is a unique number that
+                  identifies the field.  The checkbox title is at the
+                  coordinates title_x, title_y.  The box that contains the
+                  checkbox entries is at coordinates boxtopx, bottopy and
+                  boxbotx, boxboty.
+
+    Return value  none.
+
+    See Also      add_checkbox_entry, checkbox_colors, checkbox_entry_status
+
+    add_checkbox_entry
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds an entry to a checkbox field.
+
+    Syntax        void form_c::add_checkbox_entry(ushort checkbox_id,
+                                                  uchar id, uchar x,
+                                                  uchar y, uchar *title,
+                                                  uchar checked);
+
+    Remarks       add_checkbox_entry adds an entry to a checkbox field.
+                  Unlike other field types were pointers are set and the
+                  variables are directly edited by the form, checkboxes are
+                  edited and than the status of each entry is checked when
+                  the form is completed.  checkbox_id is the id of the
+                  checkbox to add the entry to.  id is a unique id for the
+                  entry with in the checkbox.  ids for checkbox are unique
+                  and can be the same as field ids.  The entry is displayed
+                  at x, y inside the checkbox's box.  title is the title of
+                  the entry. The entry starts out checked if the checked
+                  variable is true.
+
+    Return value  none.
+
+    See Also      add_checkbox, checkbox_entry_status
+
+    add_control_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a control string field to the form.
+
+    Syntax        void form_c::add_control_string(ushort id, uchar title_x,
+                                                  uchar title_y,
+                                                  uchar *title,
+                                                  uchar *ctrl_str,
+                                                  uchar entry_x,
+                                                  uchar entry_y,
+                                                  uchar view_len,
+                                                  uchar max_len);
+
+    Remarks       add_control_string adds a control string field to the
+                  form.  id is a unique number that identifies the field.
+                  The title for the field is displayed at the coordinates
+                  title_x, title_y inside the window.  ctrl_str is a string
+                  of valid characters for the field.  This string is case
+                  sensitive and any characters that are not in this string
+                  will not be allowed to be entered.  The string is entered
+                  at the coordinates entry_x, entry_y inside the window.
+                  view_len is the size of the editing window.  Only this
+                  much of the string is visible to the user at a time.
+                  max_len is the maximum length of the string.
+
+    Return value  none.
+
+    See Also      set_control_string_var, string_colors
+
+    add_format_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a format string field to the form.
+
+    Syntax        void form_c::add_format_string(ushort id, uchar title_x,
+                                                 uchar title_y,
+                                                 uchar *title,
+                                                 uchar *ctrl_str,
+                                                 uchar entry_x,
+                                                 uchar entry_y);
+
+    Remarks       add_format_string adds a formatted input field to the
+                  form.  id is a unique number that identifies the field.
+                  The title for the field is displayed at the coordinates
+                  title_x, title_y inside the window. ctrl_str is what
+                  formats the input.  This field will let the user input a
+                  number wherever a '#' is in the control string and a
+                  character wherever an 'A' or 'a' is. An uppercase A forces
+                  their characters to be upcased and a lowercase a forces
+                  their characters to be downcased.  An example of the
+                  control string for inputting a phone number would be
+                  "###-###-####".  An example of inputting a first name with
+                  the first letter capitalized and the other characters
+                  lowercase would be "Aaaaaaaaaaaaaa".
+
+    Return value  None.
+
+    See Also      set_format_string_var, string_colors
+
+    add_hhmmss
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a time field to the form.
+
+    Syntax        void fomr_c::add_hhmmss(ushort id, uchar title_x,
+                                          uchar title_y, uchar *title,
+                                          uchar entry_x, uchar entry_y);
+
+    Remarks       add_hhmmss adds a 24 hour time field to the form.  id
+                  is the unique number that identifies the field.
+                  The title for the field is displayed at the coordinates
+                  title_x, title_y inside the window.  The input field is
+                  at entry_x, entry_y inside the window.
+
+    Return value  None.
+
+    See Also      set_hhmmss_var, string_colors
+
+
+    add_int
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a int field to the form.
+
+    Syntax        void form_c::add_int(ushort id, uchar title_x,
+                                        uchar title_y, uchar *title,
+                                        uchar entry_x, uchar entry_y,
+                                        int min_num, int max_num);
+
+    Remarks       add_int adds a int field to the form.  The id is a
+                  unique number that identifies the field.  The title
+                  is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the byte takes place
+                  inside the window at entry_x, entry_y.  The number
+                  inputted can be no greater than max_num and no less
+                  than min_num.  The range of min_num and max_num is
+                  -32,768 to 32,767.
+
+    Return value  none.
+
+    See Also      set_int_var, number_colors
+
+    add_listbox
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a listbox field to the form.
+
+    Syntax        void add_listbo(ushort id, uchar title_x, uchar title_y,
+                                  uchar *title, uchar boxtopx,
+                                  uchar boxtopy, uchar boxbotx,
+                                  uchar boxboty, uchar vscroll,
+                                  uchar hscroll);
+
+    Remarks       add_listbox adds a listbox entry to the form.  A listbox
+                  is a group of strings that represent data that the user
+                  can scroll through and select from.  id is a unique
+                  number that identifies the field.  The title is displayed
+                  inside the window at the coordinates title_x, title_y.
+                  The box which the entries are scroll inside of is at the
+                  coordinates boxtopx, boxtopy and boxbotx, boxboty.  If
+                  vscroll or hscroll is true that a horizontal or vertical
+                  scroll bar will be present.  These scroll bars are just
+                  to the right or below the box coordinates.
+
+    Return value  none.
+
+    See Also      add_listbox_entry, listbox_colors, get_listbox_entry
+
+    add_listbox_entry
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds an entry to a listbox field.
+
+    Syntax        void add_listbox_entry (ushort listbox_id, uchar *str,
+                                          void FAR *spec_data,
+                                          ushort spec_data_size);
+
+    Remarks       add_listbox_entry adds an entry to a listbox field.
+                  listbox_id is the id of the listbox to which the entry
+                  should be added too.  str is the string that will be
+                  displayed inside the listbox for the entry.  spec_data
+                  is a pointer to specific data that the entry represents.
+                  spec_data_size is the size of the data that is pointed
+                  to by spec_data.  The unique feature of this listbox
+                  implementation is that it stores the data represented so
+                  when an entry is choosen that programmer doesn't have to
+                  parse complex strings.
+
+    Return value  none.
+
+    See Also      get_listbox_entry
+
+    add_long
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a long field to the form.
+
+    Syntax        void form_c::add_long(ushort id, uchar title_x,
+                                        uchar title_y, uchar *title,
+                                        uchar entry_x, uchar entry_y,
+                                        long min_num, long max_num);
+
+    Remarks       add_long adds a long field to the form.  The id is a
+                  unique number that identifies the field.  The title
+                  is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the byte takes place
+                  inside the window at entry_x, entry_y.  The number
+                  inputted can be no greater than max_num and no less
+                  than min_num.  The range of min_num and max_num is
+                  -2,147,483,648 to 2,147,647.
+
+    Return value  none.
+
+    See Also      set_long_var, number_colors
+
+    add_mmddyyyy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a date field to the form.
+
+    Syntax        void fomr_c::add_mmddyyyy(ushort id, uchar title_x,
+                                            uchar title_y, uchar *title,
+                                            uchar entry_x, uchar entry_y);
+
+    Remarks       add_mmddyyyy adds a date field to the form.  id is the
+                  unique number that identifies the field. The title for
+                  the field is displayed at the coordinates title_x, title_y
+                  inside the window.  The input field is at entry_x,
+                  entry_y inside the window.
+
+    Return value  None.
+
+    See Also      set_mmddyyyy_var, string_colors
+
+    add_radiobutton
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds radiobutton field to the form.
+
+    Syntax        void form_c::add_radiobutton(ushort id, uchar title_x,
+                                               uchar title_y, uchar *title,
+                                               uchar boxtopx, uchar boxtopy,
+                                               uchar boxbotx, uchar boxboty);
+
+    Remarks       add_radiobutton adds a radiobutton field to the form.  A
+                  radiobutton is a group of variables where only one choice
+                  can be highlighted. The id is a unique number that
+                  identifies the field.  The radiobutton title is at the
+                  coordinates title_x, title_y.  The box that contains the
+                  radiobutton entries is at coordinates boxtopx, bottopy and
+                  boxbotx, boxboty.
+
+    Return value  none.
+
+    See Also      add_radiobutton_entry, radiobutton_colors,
+                  radiobutton_status
+
+    add_radiobutton_entry
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds an entry to a radiobutton field.
+
+    Syntax        void form_c::add_radiobutton_entry(ushort radiobutton_id,
+                                                     uchar id, uchar x,
+                                                     uchar y, uchar *title,
+                                                     uchar checked);
+
+    Remarks       add_radiobutton_entry adds an entry to a radiobutton
+                  field. Unlike other field types were pointers are set and
+                  the variables are directly edited by the form,
+                  radiobuttons are edited and than the status of it is
+                  checked when the form is completed.  radiobutton_id is
+                  the id of the radiobutton to add the entry to.  id is a
+                  unique id for the entry with in the radiobutton.  ids
+                  for radiobutton are unique and can be the same as field
+                  ids.  The entry is displayed at x, y inside the
+                  radiobutton's box.  title is the title of the entry. The
+                  entry starts out checked if the checked variable is true.
+
+    Return value  none.
+
+    See Also      add_radiobutton, radiobutton_status
+
+    add_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a string field to the form.
+
+    Syntax        void form_c::add_string(ushort id, uchar title_x,
+                                          uchar title_y, uchar *title,
+                                          uchar entry_x, uchar entry_y,
+                                          uchar view_len, uchar max_len);
+
+    Remarks       add_string adds a string field to the form.  id is
+                  a unique number that identifies the field. The title for
+                  the field is displayed at the coordinates title_x, title_y
+                  inside the window.  The string is entered at the
+                  coordinates entry_x, entry_y inside the window.  view_len
+                  is the size of the editing window.  Only this much of the
+                  string is visible to the user at a time. max_len is the
+                  maximum length of the string.
+
+    Return value  none.
+
+    See Also      set_string_var, string_colors
+
+    add_toggle_uchar
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a uchar toggle field to the form.
+
+    Syntax        void form_c::add_toggle_uchar(ushort id, uchar title_x,
+                                                uchar title_y, uchar *title,
+                                                uchar entry_x,
+                                                uchar entry_y);
+
+    Remarks       add_toggle_uchar adds a uchar toggle field to the form.
+                  id is a unique number that identifies the field. The title
+                  for the field is displayed at the coordinates title_x,
+                  title_y inside the window.  The yes/no string is displayed
+                  at the coordinates entry_x, entry_y inside the window.
+
+    Return value  None
+
+    See Also      set_toggle_uchar_var, string_colors
+
+
+    add_toggle_uchar_bit
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a uchar toggle bit field to the form.
+
+    Syntax        void form_c::add_toggle_uchar_bit(ushort id,
+                                                    uchar title_x,
+                                                    uchar title_y,
+                                                    uchar *title,
+                                                    uchar entry_x,
+                                                    uchar entry_y,
+                                                    uchar bit);
+
+    Remarks       add_toggle_uchar_bit adds a uchar toggle bit field to the
+                  form. id is a unique number that identifies the field. The
+                  title for the field is displayed at the coordinates
+                  title_x, title_y inside the window.  The yes/no string is
+                  displayed at the coordinates entry_x, entry_y inside the
+                  window. bit is the bit that will be toggled.  If this bit
+                  is on than the field is yes.  If it is off the field is
+                  no.  An example of bit is (1<<1) which would be bit one.
+
+    Return value  None.
+
+    See Also      set_toggle_uchar_bit_var, string_colors
+
+    add_toggle_ulong_bit
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a ulong toggle bit field to the form.
+
+    Syntax        void form_c::add_toggle_ulong_bit(ushort id,
+                                                    uchar title_x,
+                                                    uchar title_y,
+                                                    uchar *title,
+                                                    uchar entry_x,
+                                                    uchar entry_y,
+                                                    ulong bit);
+
+    Remarks       add_toggle_ulong_bit adds a ulong toggle bit field to the
+                  form. id is a unique number that identifies the field. The
+                  title for the field is displayed at the coordinates
+                  title_x, title_y inside the window.  The yes/no string is
+                  displayed at the coordinates entry_x, entry_y inside the
+                  window. bit is the bit that will be toggled.  If this bit
+                  is on than the field is yes.  If it is off the field is
+                  no.  An example of bit is (1<<1) which would be bit one.
+
+    Return value  None.
+
+    See Also      set_toggle_ulong_bit_var, string_colors
+
+    add_toggle_ushort_bit
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a ushort toggle bit field to the form.
+
+    Syntax        void form_c::add_toggle_ushort_bit(ushort id,
+                                                     uchar title_x,
+                                                     uchar title_y,
+                                                     uchar *title,
+                                                     uchar entry_x,
+                                                     uchar entry_y,
+                                                     ushort bit);
+
+    Remarks       add_toggle_ushort_bit adds a ushort toggle bit field to
+                  the form. id is a unique number that identifies the field.
+                  The title for the field is displayed at the coordinates
+                  title_x, title_y inside the window.  The yes/no string is
+                  displayed at the coordinates entry_x, entry_y inside the
+                  window. bit is the bit that will be toggled.  If this bit
+                  is on than the field is yes.  If it is off the field is
+                  no.  An example of bit is (1<<1) which would be bit one.
+
+    Return value  None.
+
+    See Also      set_toggle_ushort_bit_var, string_colors
+
+    add_ulong
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a ulong field to the form.
+
+    Syntax        void form_c::add_ulong(ushort id, uchar title_x,
+                                         uchar title_y, uchar *title,
+                                         uchar entry_x, uchar entry_y,
+                                         ulong min_num, ulong max_num);
+
+    Remarks       add_ulong adds a ulong field to the form.  The id is a
+                  unique number that identifies the field.  The title
+                  is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the ulong takes place
+                  inside the window at entry_x, entry_y.  The number
+                  inputted can be no greater than max_num and no less
+                  than min_num.  The range of min_num and max_num is
+                  0 to 4,294,967,295.
+
+    Return value  none.
+
+    See Also      set_ulong_var, number_colors
+
+    add_upcase_string
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a upcase string field to the form.
+
+    Syntax        void form_c::add_upcase_string(ushort id, uchar title_x,
+                                                 uchar title_y,
+                                                 uchar *title,
+                                                 uchar entry_x,
+                                                 uchar entry_y,
+                                                 uchar view_len,
+                                                 uchar max_len);
+
+    Remarks       add_upcase_string adds a upcase string field to the form.
+                  id is a unique number that identifies the field. The title
+                  for the field is displayed at the coordinates title_x,
+                  title_y inside the window.  The string is entered at the
+                  coordinates entry_x, entry_y inside the window.  view_len
+                  is the size of the editing window.  Only this much of the
+                  string is visible to the user at a time. max_len is the
+                  maximum length of the string.  All characters will be
+                  upcased upon input.
+
+    Return value  none.
+
+    See Also      set_upcase_string_var, string_colors
+
+    add_user_def_char
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a user defined key to the form.
+
+    Syntax        void form_c::add_user_def_char(ushort id, uchar ch,
+                                                 uchar ext);
+
+    Remarks       add_user_def_char adds a user definable key to the form.
+                  id is a unique number that identifies the character.  This
+                  number can not be the same as any of the field ids.  ch
+                  is the ascii scan code of the character.  if ext is true
+                  than the form think the key is extended.  When the user
+                  presses one of these keys the id is returned by the load
+                  function.  There are some keys which can not be defined.
+                  These are: CR, ESC, BACK SPACE, TAB, SPACE, SHIFT TAB,
+                  UP ARROW, DOWN ARROW, LEFT ARROW, and RIGHT ARROW.
+
+    Return value  none.
+
+    See Also      load
+
+    add_ushort
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Adds a ushort field to the form.
+
+    Syntax        void form_c::add_ushort(ushort id, uchar title_x,
+                                          uchar title_y, uchar *title,
+                                          uchar entry_x, uchar entry_y,
+                                          ushort min_num, ushort max_num);
+
+    Remarks       add_ushort adds a ushort field to the form.  The id is a
+                  unique number that identifies the field.  The title
+                  is displayed inside the window at the coordinates
+                  title_x, title_y.  The entry of the ushort takes place
+                  inside the window at entry_x, entry_y.  The number
+                  inputted can be no greater than max_num and no less
+                  than min_num.  The range of min_num and max_num is
+                  0 to 65,535.
+
+    Return value  none.
+
+    See Also      set_ushort_var, number_colors
+
+    button_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all buttons in the form.
+
+    Syntax        void form_c::button_colors(uchar norm_fcolor,
+                                             uchar norm_bcolor,
+                                             uchar high_fcolor,
+                                             uchar high_bcolor,
+                                             uchar inactive_fcolor,
+                                             uchar inactive_bcolor,
+                                             uchar shadow_fcolor,
+                                             uchar shadow_bcolor);
+
+    Remarks       button_colors sets the colors used by all the buttons in
+                  the form.  norm_fcolor and norm_bcolor are the foreground
+                  and background colors when the button is not highlighted.
+                  high_fcolor and high_bcolor are the foreground and
+                  background colors when the button is highlighted.
+                  inactive_fcolor and inactive_bcolor are the foreground
+                  and background colors when the button is inactive.
+                  shadow_fcolor and shadow_bcolor are the foreground and
+                  background colors used to draw the shadow around the
+                  button.
+
+    Return value  none.
+
+    See Also      add_button
+
+    checkbox_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all checkboxs in the form.
+
+    Syntax        void form_c::checkbox_colors(uchar norm_fcolor,
+                                               uchar norm_bcolor,
+                                               uchar high_fcolor,
+                                               uchar high_bcolor,
+                                               uchar inactive_fcolor,
+                                               uchar inactive_bcolor,
+                                               uchar box_bcolor);
+
+    Remarks       checkbox_colors sets the colors used by all the checkboxs
+                  in the form.  norm_fcolor and norm_bcolor are the
+                  foreground and background colors when the checkbox is not
+                  highlighted. high_fcolor and high_bcolor are the
+                  foreground and background colors when the checkbox is
+                  highlighted. inactive_fcolor and inactive_bcolor are the
+                  foreground and background colors when the checkbox is
+                  inactive. box_bcolor is the background color for the box
+                  where all the entries are in.
+
+    Return value  none.
+
+    See Also      add_checkbox, add_checkbox_entry, checkbox_entry_status
+
+    checkbox_entry_status
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Checks the status of a checkbox entry.
+
+    Syntax        uchar form_c::checkbox_entry_status(ushort field_id,
+                                                      uchar entry_id);
+
+    Remarks       checkbox_entry_status checks the status of a entry in a
+                  checkbox.  field_id is the id of the checkbox and entry_id
+                  is the id of the entry that is to be checked.
+
+    Return value  If the entry is checked than a non-zero value is returned
+                  else a zero is returned.
+
+    See Also      add_checkbox, add_checkbox_entry, checkbox_colors
+
+    create
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Creates a form.
+
+    Syntax        void form_c::create(win_c FAR *win);
+
+    Remarks       create creates a form.  It initializes all the data for
+                  the form.  win is a pointer to a window class where the
+                  form will be displayed and edited.
+
+    Return value  none.
+
+    See Also      destroy, display
+
+    destroy
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Destroys a form.
+
+    Syntax        void form_c::destroy(void);
+
+    Remarks       destroy destroys a form and frees all memory allocated
+                  for a form.
+
+    Return value  none.
+
+    See Also      create
+
+    display
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Displays the entire form.
+
+    Syntax        void form_c::display(void);
+
+    Remarks       display displays all the fields for the form and the data
+                  that corresponds to the field.  Display should be called
+                  once before the load function is called.
+
+    Return value  none.
+
+    See Also      load
+
+    field_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all fields in the form.
+
+    Syntax        void form_c::field_colors(uchar norm_fcolor,
+                                            uchar norm_bcolor,
+                                            uchar high_fcolor,
+                                            uchar high_bcolor,
+                                            uchar inactive_fcolor,
+                                            uchar inactive_bcolor);
+
+    Remarks       field_colors sets the colors used by all the fields
+                  in the form.  norm_fcolor and norm_bcolor are the
+                  foreground and background colors when the field is not
+                  highlighted. high_fcolor and high_bcolor are the
+                  foreground and background colors when the field is
+                  highlighted. inactive_fcolor and inactive_bcolor are the
+                  foreground and background colors when the field is
+                  inactive.
+
+    Return value  none.
+
+    get_cur_field
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the id of the current highlighted field.
+
+    Syntax        ushort form_c::get_cur_field(void);
+
+    Remarks       get_cur_field returns the id of the currently highlighted
+                  field.  An example of when this might be used would be
+                  with a user defined key like F1 and an online help system.
+
+    Return value  get_cur_field returns the id of the current highlighted
+                  field.
+
+    get_listbox_entry
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the data for the last clicked entry.
+
+    Syntax        void get_listbox_entry(ushort listbox_id, uchar *str,
+                                         void FAR *spec_data);
+
+    Remarks       get_listbox_entry copies the data of the last entry
+                  clicked in the listbox.  id is the id of the listbox to
+                  get the entry from.  str and spec_data are pointers to
+                  variables to which get_listbox_entry will copy the data
+                  into.
+
+    Return value  None.
+
+    See Also      add_listbox_entry, load
+
+    listbox_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all listboxs in the form.
+
+    Syntax        void listbox_colors(uchar norm_fcolor, uchar norm_bcolor,
+                                      uchar high_fcolor, uchar high_bcolor,
+                                      uchar box_bcolor, uchar scroll_fcolor,
+                                      uchar scroll_bcolor);
+
+
+    Remarks       listbox_colors sets the colors used by all the listboxs
+                  in the form.  norm_fcolor and norm_bcolor are the
+                  foreground and background colors when the listbox entry
+                  is not highlighted. high_fcolor and high_bcolor are the
+                  foreground and background colors when the listbox entry
+                  is highlighted. box_bcolor is the background color for
+                  the box where all the entries are displayed. scroll_fcolor
+                  and scroll_bcolor and the foreground and background colors
+                  for the optional scroll bars.
+
+    Return value  none.
+
+    See Also      default_colors
+
+    load
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Loads a form.
+
+    Syntax        ushort form_c::load(void);
+
+    Remarks       load loads a form for the user to edit.  The function
+                  display should be called before load.  Load should be
+                  called over and over until the user presses a button
+                  or user defined key that the developer wants to use
+                  to terminate the form.
+
+    Return value  load retuns the id of a button that was clicked, a
+                  user defined key that was pressed, or a listbox that
+                  had an entry clicked.
+
+    See also      display, add_button, add_user_def_char, get_listbox_entry
+
+    number_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all numbers in the form.
+
+    Syntax        void form_c::number_colors(uchar norm_fcolor,
+                                             uchar norm_bcolor,
+                                             uchar high_fcolor,
+                                             uchar high_bcolor,
+                                             uchar inactive_fcolor,
+                                             uchar inactive_bcolor);
+
+    Remarks       number_colors sets the colors used by all the numbers
+                  in the form.  norm_fcolor and norm_bcolor are the
+                  foreground and background colors when the number is not
+                  highlighted. high_fcolor and high_bcolor are the
+                  foreground and background colors when the number is
+                  highlighted. inactive_fcolor and inactive_bcolor are the
+                  foreground and background colors when the number is
+                  inactive.
+
+    Return value  none.
+
+    See Also      default_colors
+
+    radiobutton_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all radiobuttons in the form.
+
+    Syntax        void form_c::radiobutton_colors(uchar norm_fcolor,
+                                                  uchar norm_bcolor,
+                                                  uchar high_fcolor,
+                                                  uchar high_bcolor,
+                                                  uchar inactive_fcolor,
+                                                  uchar inactive_bcolor,
+                                                  uchar box_bcolor);
+
+    Remarks       radiobutton_colors sets the colors used by all the
+                  radiobuttons in the form.  norm_fcolor and norm_bcolor are
+                  the foreground and background colors when the radiobutton
+                  is not highlighted. high_fcolor and high_bcolor are the
+                  foreground and background colors when the radiobutton is
+                  highlighted. inactive_fcolor and inactive_bcolor are the
+                  foreground and background colors when the radiobutton is
+                  inactive. box_bcolor is the background color for the box
+                  where all the entries are in.
+
+    Return value  none.
+
+    See Also      default_colors
+
+    radiobutton_status
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Returns the id of the highlighted radiobutton entry.
+
+    Syntax        uchar form_c::radiobutton_status(void);
+
+    Remarks       radiobutton_status returns the id of the radiobutton entry
+                  that is highlighted.  This function should be used once
+                  the form is finished being edited and before the destroy
+                  function is called.
+
+    Return value  radiobutton_status returns the id of the radiobutton entry
+                  that is highlighted.
+
+    See Also      add_radiobutton, add_radiobutton_entry
+
+
+    set...var
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Sets the pointer to the variable that is edited by a
+                  specific field.
+
+    Syntax        void form_c::set_4d_addr_var(ushort id, faddr_t *addr,
+                                               uchar edit);
+
+                  void form_c::set_char_var(ushort id, char *num,
+                                            uchar edit);
+
+                  void form_c::set_control_string_var(ushort id, uchar *str,
+                                                      uchar edit);
+
+                  void form_c::set_byte_var(ushort id, uchar *num,
+                                            uchar edit);
+
+                  void form_c::set_format_string_var(ushort id, uchar *str,
+                                                     uchar edit);
+
+                  void form_c::set_hhmmss_var(ushort id, ulong *t,
+                                              uchar edit);
+
+                  void form_c::set_int_var(ushort id, int *num,
+                                           uchar edit);
+
+                  void form_c::set_long_var(ushort id, long *num,
+                                            uchar edit);
+
+                  void form_c::set_mmddyyyy_var(ushort id, ulong *d,
+                                                uchar edit);
+
+                  void form_c::set_string_var(ushort id, uchar *str,
+                                              uchar edit);
+
+                  void form_c::set_toggle_uchar_var(ushort id, uchar *t,
+                                                    uchar edit);
+
+                  void form_c::set_toggle_uchar_bit_var(ushort id, uchar *t,
+                                                        uchar edit);
+
+                  void form_c::set_toggle_ulong_bit_var(ushort id, ulong *t,
+                                                        uchar edit);
+
+                  void form_c::set_toggle_ushort_bit_var(ushort id,
+                                                         ushort *t,
+                                                         uchar edit);
+
+                  void form_c::set_ulong_var(ushort id, ulong *num,
+                                             uchar edit);
+
+                  void form_c::set_upcase_string_var(ushort id, uchar *str,
+                                                     uchar edit);
+
+                  void form_c::set_ushort_var(ushort id, ushort *num,
+                                              uchar edit);
+
+    Remarks       All fields with the exception of radiobuttons and
+                  checkboxes directly modify the variable.  When the
+                  addition of each field to the form the corresponding
+                  set...var function must be called.  The id is the unique
+                  id of the corresponding field.  The second argument is the
+                  pointer to the data that will be modified.  edit tells
+                  wether the field should be initialized by the form.  If
+                  edit is zero the default value for the field is stored
+                  in the variable.
+
+    Return value  none.
+
+    See Also      corresponding add... function for each field type.
+
+    string_colors
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Functions     Sets the colors used by all strings in the form.
+
+    Syntax        void form_c::string_colors(uchar norm_fcolor,
+                                             uchar norm_bcolor,
+                                             uchar high_fcolor,
+                                             uchar high_bcolor,
+                                             uchar inactive_fcolor,
+                                             uchar inactive_bcolor);
+
+    Remarks       string_colors sets the colors used by all the strings
+                  in the form.  norm_fcolor and norm_bcolor are the
+                  foreground and background colors when the string is not
+                  highlighted. high_fcolor and high_bcolor are the
+                  foreground and background colors when the string is
+                  highlighted. inactive_fcolor and inactive_bcolor are the
+                  foreground and background colors when the string is
+                  inactive.
+
+    Return value  none.
+
+    MOUSE FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+      Mouse support adds simplicity to the form and menu classes.  The mouse
+    support provided is non-interrupt driven and available on both the DOS
+    and OS/2 systems.  Detection of the mouse is done automatically by the
+    win_init function.  The mouse is reset when the win_deinit function is
+    called.  Calls to mouse functions without the presence of a mouse will
+    not affect the program since TI/2 keeps track of wether the mouse is
+    there or not.  There are global variables which the mouse system
+    maintains.  These variables are:
+
+    mouse_exist   - True if mouse exists
+    mouse_left    - Status of left button
+    mouse_center  - Status of center button
+    mouse_right   - Status of right button
+    mouse_row     - Current row of mouse cursor
+    mouse_col     - Current column of mouse cursor
+
+    There are defined values for the buttons.  These defines are:
+
+    0               - Button not down or clicked
+    BUTTON_CLICKED  - Button clicked
+    BUTTON_DOWN     - Button is currently down
+
+    Below are the functions that make up the mouse support
+
+    mouse_deinit
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Resets mouse.
+
+    Syntax        void mouse_deinit(void);
+
+    Remarks       This function is called automatically called by
+                  win_deinit.  It resets the mouse and removes it from the
+                  screen.
+
+    Return value  none.
+
+    See Also      mouse_init
+
+    mouse_init
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Detects mouse and initializes it.
+
+    Syntax        void mouse_init(void);
+
+    Remarks       This function is automatically called by win_init.  It
+                  detects the presence of a mouse and initializes it.
+
+    Return value  none.
+
+    See Also      mouse_deinit
+
+    mouse_off
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Hides mouse cursor on the screen
+
+    Syntax        void mouse_off(void);
+
+    Remarks       This function hides the mouse cursor on the screen.
+                  This should be called whenever a write to the screen is
+                  performed.  All TI/2 functions automatically call this
+                  function.
+
+    Return value  none.
+
+    See Also      mouse_on
+
+    mouse_on
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Shows mouse cursor on the screen
+
+    Syntax        void mouse_on(void);
+
+    Remarks       This function shows the mouse cursor on the screen.
+                  This should be called after a write to the screen is
+                  performed.  All TI/2 functions automatically call this
+                  function.
+
+    Return value  none.
+
+    See Also      mouse_off
+
+    mouse_read_event
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Reads mouse event and updates mouse variables
+
+    Syntax        uchar mouse_read_event(void);
+
+    Remarks       mouse_read_event reads a mouse event that has occured
+                  since the last time this function was called.  It updates
+                  the mouse variables.
+
+    Return value  mouse_read_event returns true if a mouse event was read
+                  or false if none occured.
+
+    TIME SLICE FUNCTIONS
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+      Since multitasking operating systems are a reality programs should be
+    designed with CPU usage in mind.  Whenever a program is in an idle loop
+    the time slice should be called.  This allows the operating system to
+    give the CPU time to another program.  TI/2 supports OS/2, DESQview,
+    Windows, and Windows/386 time slicing.  Below are the functions used for
+    time slicing.
+
+    init_timeslice
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Detects the operating system and time slicing type to use.
+
+    Syntax        void init_timeslice(void);
+
+    Remarks       init_timeslice is automatically called by win_init and
+                  detects the multitasker that TI/2 is running under.
+
+    Return value  none.
+
+    timeslice
+    ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+    Function      Releases time to the operating system.
+
+    Syntax        void timeslice(void);
+
+    Remarks       timeslice gives up time to other programs running under
+                  the multitasker.  This function should be called when
+                  the program is idlely waiting for input.
+
+    Return value  none.

@@ -1,0 +1,73 @@
+4/22/95 - v0.99a - Released
+
+4/23/95 - Initialized the arrays used internally by the menu differently.
+4/23/95 - Changed place where menu calculates the longest menu command.
+          This now gets updated whenever a menu command function or menu
+          command submenu gets added instead of the a submenu is loaded.
+4/23/95 - Added completely memory allocation testing.  This had been
+          overlooked in the DOS port.
+4/24/95 - Changed the way memory pointers are deinitialized to help stop
+          lockups when win_deinit gets called and it tries to free any
+          memory that might not have been freed yet.
+4/25/95 - Changed the code and used actual functions instead of defines to
+          accomplish the window updating.  This has solved may odd bugs that
+          showed up in the earlier versions.
+4/25/95 - Added a timed pause in the demo so that you can sit back and watch
+          instead of having to hit the key to make it continue the whole time.
+
+4/26/95 - v0.99b - Released
+
+4/27/95 - Fixed a major bug that was corrupting the heap in one of the
+          display functions.  This was the cause of many unknown and
+          untrackable errors that were occuring.
+4/28/95 - Improved resize function to make it faster and use less memory.
+4/29/95 - Added text mode changing to the demo.
+4/29/95 - Added implode and explode functions.
+4/29/95 - Added WIN_EXPLODE and WIN_IMPLODE to create attribute to cause
+          the windows to either explode on creation, implode on destroy, or
+          both.
+4/29/95 - Formatted documentation with a left margin so that holes can be
+          punched in it to bind etc. without conflicting with the text.
+
+4/29/95 - v0.99c - Released
+
+4/30/95 - Fixed visibility calculation bug.  If two windows overlapped, but
+          none of the corners of either box fill inside the other box than
+          it would think that the window was completely visible.
+4/30/95 - Added mouse sub-system and support for mouse in menus and forms
+          under DOS and OS/2.
+5/07/95 - Added ato? functions for the unsigned data types.  This corrects
+          input problems with large unsigned numbers.
+5/09/95 - Added OS/2, DOS under OS/2, DV, Windows, and Windows/386 time slice
+          support.
+5/12/95 - Finished new data entry system.  This new system is a thousand times
+          easier to use and provides 20 data types and user definable keys.
+5/12/95 - Added clr_eoc function
+5/12/95 - Added fill_col function
+5/12/95 - Added fill_row function
+
+5/17/95 - v0.99d - Released
+
+5/19/95 - Fixed bug in menu_c::add_menucmd_submenu function.
+5/20/95 - Fixed bug in menu_c::destroy that would crash program when it tried
+          to destroy windows that corresponded with the submenus.
+5/20/95 - Switched some pointers instead of copying structures.  This should
+          provide a slight speed increase and less CPU usage while menu loaded.
+5/20/95 - Improved a OS/2 mouse support in forms.  Buttons now unclick
+          correctly.
+5/21/95 - Added form_set_default_colors and form_c::default_colors to eliminate
+          the repetitive calling of the same colors in a program
+6/01/95 - Too many changes to note.  Revised many things including mouse
+          handler, windows, menu.
+6/02/95 - Added listboxes to form.
+6/08/95 - Added seamless multithreaded window functions.
+6/09/95 - Added automatic including of stdio.h and conio.h headers when ti2.h
+          is included to solve any problems if the programmer forgets to
+          include these before they include ti2.h
+
+6/10/95 - v0.99e - Released
+
+6/13/95 - Improved win_c::create parameter checking.  If a parameter contains
+          an incorrect value it will display an error message and display
+          the parameter and the maximum or minimum value that the parameter
+          could have been.

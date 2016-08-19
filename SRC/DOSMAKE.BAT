@@ -1,0 +1,59 @@
+@ECHO OFF
+REM
+REM   Erase all old libraries.
+REM      
+erase RELEASE\SW\TC30\HUGE\*.LIB
+erase RELEASE\SW\TC30\LARGE\*.LIB
+erase RELEASE\SW\TC30\MEDIUM\*.LIB
+erase RELEASE\REG\TC30\HUGE\*.LIB
+erase RELEASE\REG\TC30\LARGE\*.LIb
+erase RELEASE\REG\TC30\MEDIUM\*.LIB
+REM
+REM   Compile TI/2 Window module
+REM      
+erase *.obj
+MAKE -fTCDOSWIN.MAK -DMODEL=m -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSWIN.MAK -DMODEL=l -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSWIN.MAK -DMODEL=h -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSWIN.MAK -DMODEL=m
+erase *.obj
+MAKE -fTCDOSWIN.MAK -DMODEL=l
+erase *.obj
+MAKE -fTCDOSWIN.MAK -DMODEL=h
+REM
+REM   Compile TI/2 Menu module
+REM      
+erase *.obj
+MAKE -fTCDOSMNU.MAK -DMODEL=m -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSMNU.MAK -DMODEL=l -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSMNU.MAK -DMODEL=h -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSMNU.MAK -DMODEL=m
+erase *.obj
+MAKE -fTCDOSMNU.MAK -DMODEL=l
+erase *.obj
+MAKE -fTCDOSMNU.MAK -DMODEL=h
+REM
+REM   Compile TI/2 Form module
+REM      
+erase *.obj
+MAKE -fTCDOSFRM.MAK -DMODEL=m -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSFRM.MAK -DMODEL=l -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSFRM.MAK -DMODEL=h -DSHAREWARE=1
+erase *.obj
+MAKE -fTCDOSFRM.MAK -DMODEL=m
+erase *.obj
+MAKE -fTCDOSFRM.MAK -DMODEL=l
+erase *.obj
+MAKE -fTCDOSFRM.MAK -DMODEL=h
+REM
+REM   Compile TI/2 Demo
+REM      
+MAKE -fDOS_DEMO.MAK              
