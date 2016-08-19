@@ -1,5 +1,5 @@
 # LIB-CPP-TextInterface2
-Text Interface/2. A C++ library. 
+Text Interface/2. Easy to use classes allow advanced program interfaces to be designed.  Windows, pull down menus, mouse support, and data entry allow unlimited design options to the developer.  A C++ library. 
 
 LICENSE
 ===============
